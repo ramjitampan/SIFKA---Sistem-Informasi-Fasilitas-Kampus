@@ -1,153 +1,246 @@
+````md
 <div align="center">
 
-# 🎓 SIFKA
-### Sistem Informasi Fasilitas Kampus
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" width="90"/>
 
-> *Temukan, pantau, dan laporkan fasilitas kampus dalam satu platform.*
+# ✨ SIFKA
+## Sistem Informasi Fasilitas Kampus
 
-![Version](https://img.shields.io/badge/versi-1.0.0-4f7cff?style=for-the-badge)
-![React](https://img.shields.io/badge/React-19-61dafb?style=for-the-badge&logo=react)
-![Vite](https://img.shields.io/badge/Vite-8-646cff?style=for-the-badge&logo=vite)
-![Laravel](https://img.shields.io/badge/Laravel-API-ff2d20?style=for-the-badge&logo=laravel)
+### *Smart Campus Facility Management Platform*
+
+<p align="center">
+Satu platform modern untuk memantau, mengelola, dan melaporkan fasilitas kampus secara real-time.
+</p>
+
+<br/>
+
+![Version](https://img.shields.io/badge/Version-1.0.0-5D5FEF?style=for-the-badge)
+![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)
+![Vite](https://img.shields.io/badge/Vite-8-646CFF?style=for-the-badge&logo=vite)
+![Laravel](https://img.shields.io/badge/Laravel-API-FF2D20?style=for-the-badge&logo=laravel)
+![License](https://img.shields.io/badge/License-Educational-blue?style=for-the-badge)
 
 </div>
 
 ---
 
-## ✨ Tentang Proyek
+# 📖 Tentang Project
 
-**SIFKA** adalah aplikasi web yang dirancang untuk memudahkan civitas kampus dalam mengakses informasi fasilitas, gedung, dan melaporkan kerusakan atau masalah yang ditemukan di lingkungan kampus.
+**SIFKA (Sistem Informasi Fasilitas Kampus)** adalah platform berbasis web yang dirancang untuk membantu civitas akademika dalam:
 
----
+- 🏢 Mengakses informasi fasilitas kampus
+- 📍 Mengetahui lokasi gedung & fasilitas
+- 📝 Melaporkan kerusakan fasilitas
+- 📊 Memantau status laporan secara transparan
+- ⚡ Mempermudah pengelolaan fasilitas oleh admin kampus
 
-## 🚀 Fitur Utama
-
-### 👤 Portal User
-| Fitur | Deskripsi |
-|-------|-----------|
-| 🏠 Beranda | Dashboard personal dengan statistik & laporan terbaru |
-| 🗺️ Fasilitas | Jelajahi semua fasilitas kampus dengan filter kategori |
-| 🏢 Gedung | Lihat daftar gedung beserta fasilitas di dalamnya |
-| 📝 Buat Laporan | Kirim laporan kerusakan lengkap dengan foto & lokasi GPS |
-| 📋 Laporan Saya | Pantau status laporan yang sudah dikirimkan |
-
-### 🔐 Portal Admin
-| Fitur | Deskripsi |
-|-------|-----------|
-| 📊 Dashboard | Statistik & grafik kondisi fasilitas kampus |
-| 🏢 Manajemen Gedung | Kelola data gedung kampus |
-| 🏷️ Manajemen Kategori | Atur kategori fasilitas |
-| 🗺️ Manajemen Fasilitas | Kelola semua fasilitas kampus |
-| 📋 Manajemen Laporan | Tinjau & perbarui status laporan masuk |
+Project ini dibuat untuk meningkatkan efisiensi pengelolaan sarana kampus melalui sistem digital yang modern dan interaktif.
 
 ---
 
-## 🛠️ Teknologi
+# 🚀 Fitur Utama
 
-```
-Frontend          Backend
-─────────────     ─────────────
-⚡ Vite 8         🔴 Laravel
-⚛️ React 19       🔑 Sanctum Auth
-🎨 Framer Motion  🗄️ REST API
-🔀 React Router
-📦 Zustand
-📊 Recharts
-```
+## 👨‍🎓 User Features
+
+| Feature | Deskripsi |
+|----------|------------|
+| 🏠 Dashboard | Menampilkan statistik dan aktivitas terbaru |
+| 🗺️ Jelajahi Fasilitas | Melihat fasilitas kampus berdasarkan kategori |
+| 🏢 Data Gedung | Informasi detail gedung dan fasilitas |
+| 📸 Laporan Kerusakan | Upload laporan dengan foto & lokasi GPS |
+| 📋 Riwayat Laporan | Melihat progres dan status laporan |
 
 ---
 
-## ⚙️ Cara Menjalankan
+## 🛠️ Admin Features
 
-### Prasyarat
-- Node.js versi 18 ke atas
-- Backend Laravel sudah berjalan di `http://127.0.0.1:8000`
+| Feature | Deskripsi |
+|----------|------------|
+| 📊 Dashboard Analytics | Statistik kondisi fasilitas kampus |
+| 🏢 Manajemen Gedung | CRUD data gedung |
+| 🏷️ Manajemen Kategori | Pengelolaan kategori fasilitas |
+| 🗺️ Manajemen Fasilitas | Kelola fasilitas kampus |
+| 📋 Manajemen Laporan | Validasi & update status laporan |
 
-### Langkah Instalasi
+---
 
-**1. Clone repositori**
+# 🧩 Tech Stack
+
+<div align="center">
+
+| Frontend | Backend |
+|-----------|----------|
+| ⚛️ React 19 | 🔴 Laravel |
+| ⚡ Vite 8 | 🔑 Sanctum Authentication |
+| 🎨 Framer Motion | 🌐 REST API |
+| 🧭 React Router | 🗄️ Database Integration |
+| 📦 Zustand | 🔐 API Security |
+| 📊 Recharts | 📡 JSON Response |
+
+</div>
+
+---
+
+# ⚙️ Installation Guide
+
+## 📌 Requirements
+
+Sebelum menjalankan project, pastikan sudah menginstall:
+
+- Node.js v18+
+- NPM / Yarn
+- Backend Laravel API aktif
+- Git
+
+---
+
+## 🔧 Clone Repository
+
 ```bash
 git clone https://github.com/ramjitampan/SIFKA---Sistem-Informasi-Fasilitas-Kampus.git
+````
+
+Masuk ke folder project:
+
+```bash
 cd SIFKA---Sistem-Informasi-Fasilitas-Kampus
 ```
 
-**2. Install dependensi**
+---
+
+## 📦 Install Dependencies
+
 ```bash
 npm install
 ```
 
-**3. Jalankan aplikasi**
+---
+
+## ▶️ Run Development Server
+
 ```bash
 npm run dev
 ```
 
-**4. Buka di browser**
-```
+---
+
+## 🌐 Open Browser
+
+```bash
 http://localhost:5173
 ```
 
 ---
 
-## 📁 Struktur Proyek
+# 📁 Project Structure
 
-```
+```bash
 sifka/
+│
 ├── 📁 public/
 ├── 📁 src/
-│   ├── 📁 api/              # Konfigurasi & service API
+│   ├── 📁 api/
+│   │   └── API configuration & services
+│   │
 │   ├── 📁 components/
-│   │   ├── 📁 layout/       # AdminLayout, UserLayout
-│   │   └── 📁 ui/           # Komponen reusable
+│   │   ├── 📁 layout/
+│   │   └── 📁 ui/
+│   │
 │   ├── 📁 pages/
-│   │   ├── 📁 admin/        # Halaman khusus admin
-│   │   ├── 📁 auth/         # Login & Register
-│   │   └── 📁 user/         # Halaman khusus user
-│   ├── 📁 store/            # State management (Zustand)
+│   │   ├── 📁 admin/
+│   │   ├── 📁 auth/
+│   │   └── 📁 user/
+│   │
+│   ├── 📁 store/
+│   │
 │   ├── App.jsx
 │   └── main.jsx
-├── .gitignore
-├── index.html
+│
 ├── package.json
-└── vite.config.js
+├── vite.config.js
+├── index.html
+└── .gitignore
 ```
 
 ---
 
-## 🔐 Hak Akses
+# 🔐 Access Control
 
-```
-Role     Akses
-──────   ──────────────────────────────────────────
-admin    Dashboard, CRUD gedung/fasilitas/kategori,
-         kelola & update status semua laporan
-user     Lihat fasilitas & gedung,
-         buat & hapus laporan sendiri
-```
+| Role       | Permissions                        |
+| ---------- | ---------------------------------- |
+| 👑 Admin   | Full management access             |
+| 👨‍🎓 User | Access facilities & create reports |
 
 ---
 
-## 📡 API Endpoint
+# 📡 API Endpoint
 
-Base URL: `http://127.0.0.1:8000/api`
+```bash
+Base URL:
+http://127.0.0.1:8000/api
+```
 
-| Method | Endpoint | Deskripsi |
-|--------|----------|-----------|
-| POST | `/login` | Login pengguna |
-| POST | `/register` | Registrasi pengguna |
-| GET | `/buildings` | Daftar gedung |
-| GET | `/facilities` | Daftar fasilitas |
-| GET | `/categories` | Daftar kategori |
-| GET | `/reports` | Daftar laporan |
-| POST | `/reports` | Kirim laporan baru |
+| Method | Endpoint      | Description       |
+| ------ | ------------- | ----------------- |
+| POST   | `/login`      | Login account     |
+| POST   | `/register`   | Register account  |
+| GET    | `/buildings`  | Get building data |
+| GET    | `/facilities` | Get facilities    |
+| GET    | `/categories` | Get categories    |
+| GET    | `/reports`    | Get reports       |
+| POST   | `/reports`    | Create new report |
 
 ---
 
-## 👨‍💻 Developer
+# 👨‍💻 Development Team
 
 <div align="center">
 
-Dibuat dengan ❤️ untuk membangun kampus yang lebih baik
+## Frontend Developer
 
-**SIFKA** — *Semester 6 · Client Service*
+### Ramzy Junfaris Hamonangan
+
+💻 UI/UX • Frontend Architecture • React Developer
+
+---
+
+## Backend Developer
+
+### Afif Irham Nobel
+
+🗄️ Backend System • REST API • Database Management
 
 </div>
+
+---
+
+# 🎯 Project Goals
+
+* Digitalisasi fasilitas kampus
+* Mempermudah pelaporan kerusakan
+* Transparansi pengelolaan fasilitas
+* Sistem monitoring modern berbasis web
+
+---
+
+# 📸 Preview
+
+> Tambahkan screenshot project di sini nanti ✨
+
+```bash
+/assets/preview-dashboard.png
+/assets/preview-report.png
+```
+
+---
+
+# ❤️ Credits
+
+<div align="center">
+
+### Dibuat untuk matakuliah Client Service
+
+## ✨ SIFKA — Semester 6 Project
+
+</div>
+```
