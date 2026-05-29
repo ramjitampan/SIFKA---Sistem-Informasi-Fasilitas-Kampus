@@ -1,4 +1,3 @@
-````md
 <div align="center">
 
 <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" width="90"/>
@@ -243,4 +242,3 @@ http://127.0.0.1:8000/api
 ## ✨ SIFKA — Semester 6 Project
 
 </div>
-```
