@@ -16,6 +16,7 @@ const navItems = [
   { to: '/admin/categories', label: 'Kategori', icon: Layers },
   { to: '/admin/facilities', label: 'Fasilitas', icon: MapPin },
   { to: '/admin/reports', label: 'Laporan', icon: FileText },
+  { to: '/admin/users', label: 'Pengguna', icon: User },
 ];
 
 export default function AdminLayout() {

@@ -45,11 +45,11 @@ function DetailModal({ report, onClose }) {
             <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Tanggal</div>
             <div style={{ fontSize: 13 }}>{report.created_at ? new Date(report.created_at).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }) : '—'}</div>
           </div>
-          {report.coordinates?.latitude && (
+          {report.coordinate?.lat && (
             <div style={{ background: 'var(--bg-elevated)', borderRadius: 'var(--radius)', padding: '11px 13px', gridColumn: 'span 2' }}>
               <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Koordinat</div>
               <div style={{ fontSize: 13, fontFamily: 'monospace', color: 'var(--text-secondary)' }}>
-                {report.coordinates.latitude.toFixed(6)}, {report.coordinates.longitude.toFixed(6)}
+                {report.coordinate.lat.toFixed(6)}, {report.coordinate.lng.toFixed(6)}
               </div>
             </div>
           )}
@@ -73,7 +73,7 @@ export default function UserReportsPage() {
   const load = async (p = 1) => {
     setLoading(true);
     try {
-      const res = await reportsAPI.list(p);
+      const res = await reportsAPI.list({ page: p });
       setData(res.data.data);
       setMeta(res.data.meta);
     } catch { toast.error('Gagal memuat laporan'); }
@@ -113,8 +113,8 @@ export default function UserReportsPage() {
           </div>
         )}
         <div style={{ minWidth: 0 }}>
-          <div style={{ fontWeight: 500, fontSize: 14 }} className="truncate">{v}</div>
-          <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 1 }} className="truncate">{row.description?.slice(0, 55)}…</div>
+          <div style={{ fontWeight: 500, fontSize: 14 }} className="truncate" title={v}>{v}</div>
+          <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 1 }} className="truncate" title={row.description}>{row.description}</div>
         </div>
       </div>
     )},

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  FileText, Search, Eye, Trash2, CheckCircle2, XCircle, Clock,
-  AlertCircle, Filter, ChevronDown, MapPin, User, Calendar,
-  RefreshCw, ArrowUpRight
+  FileText, Search, Eye, CheckCircle2, XCircle, Clock,
+  MapPin, User, Calendar, RefreshCw
 } from 'lucide-react';
 import { reportsAPI } from '../../api/services';
 import { Button, Table, Pagination, Modal, Card, Badge } from '../../components/ui';
@@ -117,7 +116,7 @@ function ReportDetailModal({ report, onClose, onStatusChange }) {
   );
 }
 
-export default function ReportsPage() {
+export default function StaffReportsPage() {
   const [data, setData] = useState([]);
   const [meta, setMeta] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -125,8 +124,6 @@ export default function ReportsPage() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [detailReport, setDetailReport] = useState(null);
-  const [deleteModal, setDeleteModal] = useState(null);
-  const [saving, setSaving] = useState(false);
 
   const load = async (p = 1) => {
     setLoading(true);
@@ -144,24 +141,11 @@ export default function ReportsPage() {
     setData(prev => prev.map(r => r.id === id ? { ...r, status: newStatus } : r));
   };
 
-  const handleDelete = async () => {
-    setSaving(true);
-    try {
-      await reportsAPI.delete(deleteModal.id);
-      toast.success('Laporan dihapus');
-      setDeleteModal(null); load(page);
-    } catch (err) { toast.error(err.response?.data?.message || 'Gagal menghapus'); setDeleteModal(null); }
-    setSaving(false);
-  };
-
   const filtered = data.filter(r => {
     const matchSearch = r.title.toLowerCase().includes(search.toLowerCase()) || r.user?.name?.toLowerCase().includes(search.toLowerCase());
     const matchStatus = !statusFilter || r.status === statusFilter;
     return matchSearch && matchStatus;
   });
-
-  // Stats summary
-  const statusCounts = data.reduce((acc, r) => { acc[r.status] = (acc[r.status] || 0) + 1; return acc; }, {});
 
   const columns = [
     { key: 'id', label: '#', render: v => <span style={{ color: 'var(--text-muted)', fontSize: 12 }}>#{v}</span> },
@@ -175,8 +159,8 @@ export default function ReportsPage() {
           </div>
         )}
         <div style={{ minWidth: 0 }}>
-          <div style={{ fontWeight: 500, fontSize: 14 }} className="truncate" title={v}>{v}</div>
-          <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }} className="truncate" title={row.description}>{row.description}</div>
+          <div style={{ fontWeight: 500, fontSize: 14 }} className="truncate">{v}</div>
+          <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }} className="truncate">{row.description?.slice(0, 60)}…</div>
         </div>
       </div>
     )},
@@ -197,41 +181,17 @@ export default function ReportsPage() {
       <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>{new Date(v).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
     ) : '—' },
     { key: '_actions', label: '', render: (_, row) => (
-      <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
         <Button variant="ghost" size="sm" icon={<Eye size={13} />} onClick={() => setDetailReport(row)}>Detail</Button>
-        <Button variant="danger" size="sm" icon={<Trash2 size={13} />} onClick={() => setDeleteModal(row)}>Hapus</Button>
-      </div>
     )},
   ];
 
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} style={{ padding: 28, maxWidth: 1400, margin: '0 auto' }}>
-      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 24, flexWrap: 'wrap', gap: 16 }}>
-        <div>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, marginBottom: 4, display: 'flex', alignItems: 'center', gap: 10 }}>
-            <FileText size={24} style={{ color: 'var(--yellow)' }} /> Manajemen Laporan
-          </h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>Kelola dan tindaklanjuti laporan dari pengguna</p>
-        </div>
-      </div>
-
-      {/* Quick status counts */}
-      <div style={{ display: 'flex', gap: 10, marginBottom: 24, flexWrap: 'wrap' }}>
-        {Object.entries(STATUS_CONFIG).map(([key, cfg]) => (
-          <motion.button key={key} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-            onClick={() => setStatusFilter(statusFilter === key ? '' : key)}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 8, padding: '8px 14px',
-              borderRadius: 'var(--radius)', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-body)',
-              background: statusFilter === key ? 'var(--bg-active)' : 'var(--bg-surface)',
-              border: statusFilter === key ? '1px solid var(--border-strong)' : '1px solid var(--border)',
-              transition: 'all 0.15s',
-            }}
-          >
-            <Badge color={cfg.color}>{cfg.label}</Badge>
-            <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)' }}>{statusCounts[key] || 0}</span>
-          </motion.button>
-        ))}
+      <div style={{ marginBottom: 24 }}>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, marginBottom: 4, display: 'flex', alignItems: 'center', gap: 10 }}>
+          <FileText size={24} style={{ color: 'var(--yellow)' }} /> Manajemen Laporan (Staff)
+        </h1>
+        <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>Tindaklanjuti laporan pengguna</p>
       </div>
 
       <Card style={{ padding: 0, overflow: 'hidden' }}>
@@ -260,28 +220,11 @@ export default function ReportsPage() {
         </div>
       </Card>
 
-      {/* Detail Modal */}
       <ReportDetailModal
         report={detailReport}
         onClose={() => setDetailReport(null)}
         onStatusChange={handleStatusChange}
       />
-
-      {/* Delete Modal */}
-      <Modal open={!!deleteModal} onClose={() => setDeleteModal(null)} title="Konfirmasi Hapus Laporan">
-        <div style={{ textAlign: 'center', padding: '8px 0' }}>
-          <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'var(--red-dim)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', color: 'var(--red)' }}>
-            <Trash2 size={24} />
-          </div>
-          <p style={{ fontSize: 15, marginBottom: 8 }}>Hapus laporan ini?</p>
-          <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 4 }}>{deleteModal?.title}</p>
-          <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 24 }}>Tindakan ini tidak dapat dibatalkan.</p>
-          <div style={{ display: 'flex', gap: 10, justifyContent: 'center' }}>
-            <Button variant="secondary" onClick={() => setDeleteModal(null)}>Batal</Button>
-            <Button variant="danger" loading={saving} onClick={handleDelete}>Ya, Hapus</Button>
-          </div>
-        </div>
-      </Modal>
     </motion.div>
   );
 }

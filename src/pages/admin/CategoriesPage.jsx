@@ -24,7 +24,7 @@ export default function CategoriesPage() {
   const load = async (p = 1) => {
     setLoading(true);
     try {
-      const res = await categoriesAPI.list(p);
+      const res = await categoriesAPI.list({ page: p });
       setData(res.data.data);
       setMeta(res.data.meta);
     } catch { toast.error('Gagal memuat kategori'); }

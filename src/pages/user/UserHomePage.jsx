@@ -161,8 +161,8 @@ export default function UserHomePage() {
                       </div>
                     )}
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontWeight: 500, fontSize: 14 }} className="truncate">{r.title}</div>
-                      <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>{r.facility?.name || 'Tanpa fasilitas'}</div>
+                      <div style={{ fontWeight: 500, fontSize: 14 }} className="truncate" title={r.title}>{r.title}</div>
+                      <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }} className="truncate" title={r.facility?.name || 'Tanpa fasilitas'}>{r.facility?.name || 'Tanpa fasilitas'}</div>
                     </div>
                     <Badge color={sc.color}>{sc.label}</Badge>
                   </div>

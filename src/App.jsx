@@ -5,6 +5,7 @@ import useAuthStore from './store/authStore';
 
 // Layouts
 import AdminLayout from './components/layout/AdminLayout';
+import StaffLayout from './components/layout/StaffLayout';
 import UserLayout from './components/layout/UserLayout';
 
 // Auth pages
@@ -17,6 +18,11 @@ import BuildingsPage from './pages/admin/BuildingsPage';
 import CategoriesPage from './pages/admin/CategoriesPage';
 import FacilitiesPage from './pages/admin/FacilitiesPage';
 import ReportsPage from './pages/admin/ReportsPage';
+import UsersPage from './pages/admin/UsersPage';
+
+// Staff pages
+import StaffHomePage from './pages/staff/StaffHomePage';
+import StaffReportsPage from './pages/staff/ReportsPage';
 
 // User pages
 import UserHomePage from './pages/user/UserHomePage';
@@ -25,10 +31,11 @@ import UserBuildingsPage from './pages/user/UserBuildingsPage';
 import UserReportsPage from './pages/user/UserReportsPage';
 import UserCreateReportPage from './pages/user/UserCreateReportPage';
 
-function RequireAuth({ children, adminOnly = false }) {
+function RequireAuth({ children, adminOnly = false, staffOnly = false }) {
   const { isAuthenticated, user } = useAuthStore();
   if (!isAuthenticated) return <Navigate to="/login" replace />;
   if (adminOnly && user?.role !== 'admin') return <Navigate to="/user" replace />;
+  if (staffOnly && user?.role !== 'staff') return <Navigate to="/user" replace />;
   return children;
 }
 
@@ -41,7 +48,10 @@ function RequireUser({ children }) {
 function PublicOnly({ children }) {
   const { isAuthenticated, user } = useAuthStore();
   if (isAuthenticated) {
-    return <Navigate to={user?.role === 'admin' ? '/admin' : '/user'} replace />;
+    let redirect = '/user';
+    if (user?.role === 'admin') redirect = '/admin';
+    if (user?.role === 'staff') redirect = '/staff/reports';
+    return <Navigate to={redirect} replace />;
   }
   return children;
 }
@@ -89,6 +99,13 @@ export default function App() {
           <Route path="categories" element={<CategoriesPage />} />
           <Route path="facilities" element={<FacilitiesPage />} />
           <Route path="reports" element={<ReportsPage />} />
+          <Route path="users" element={<UsersPage />} />
+        </Route>
+
+        {/* Staff routes */}
+        <Route path="/staff" element={<RequireAuth staffOnly><StaffLayout /></RequireAuth>}>
+          <Route index element={<StaffHomePage />} />
+          <Route path="reports" element={<StaffReportsPage />} />
         </Route>
 
         {/* User routes */}
