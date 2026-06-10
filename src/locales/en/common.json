@@ -1,0 +1,113 @@
+{
+    "common": {
+        "welcome": "Welcome",
+        "save": "Save",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "edit": "Edit",
+        "loading": "Loading...",
+        "error": "Something went wrong",
+        "no_data": "No data found",
+        "search": "Search...",
+        "back": "Back",
+        "submit": "Submit",
+        "sign_out": "Sign out"
+    },
+    "nav": {
+        "dashboard": "Dashboard",
+        "map": "Interactive Map",
+        "reports": "Reports",
+        "buildings": "Buildings",
+        "users": "Users"
+    },
+    "auth": {
+        "login_title": "Sign in to SIFKA",
+        "login_subtitle": "Facility Management & Reporting",
+        "register_title": "Create an account",
+        "register_subtitle": "Join SIFKA Facility Management",
+        "email": "Email address",
+        "password": "Password",
+        "full_name": "Full Name",
+        "confirm_password": "Confirm Password",
+        "sign_in": "Sign in",
+        "signing_in": "Signing in...",
+        "register": "Register",
+        "registering": "Creating account...",
+        "no_account": "Don't have an account? Register",
+        "have_account": "Already have an account? Sign in",
+        "remember_me": "Remember me"
+    },
+    "reports": {
+        "title": "Facility Reports",
+        "subtitle": "Track and manage facility maintenance requests.",
+        "new_report": "New Report",
+        "recent_reports": "Recent Reports",
+        "status": {
+            "pending": "Pending",
+            "in_progress": "In Progress",
+            "resolved": "Resolved",
+            "rejected": "Rejected"
+        },
+        "details": "Details",
+        "description": "Description",
+        "location": "Issue Location",
+        "reported_by": "Reported By",
+        "date_reported": "Date Reported",
+        "related_facility": "Related Facility",
+        "update_status": "Update Status",
+        "create_title": "Create New Report",
+        "report_title": "Report Title",
+        "facility_optional": "Facility (Optional)",
+        "attach_photo": "Attach Photo",
+        "pin_location": "Pin Location on Map",
+        "submit_report": "Submit Report",
+        "submitting": "Submitting...",
+        "accuracy_warning": "Ensure your report is accurate to help staff resolve it quickly."
+    },
+    "dashboard": {
+        "welcome": "Welcome back, {{name}}",
+        "subtitle": "Here's what's happening with facilities reporting today.",
+        "stats": {
+            "total_reports": "Total Reports",
+            "pending": "Pending",
+            "in_progress": "In Progress",
+            "resolved": "Resolved"
+        },
+        "recent_reports": "Recent Reports",
+        "view_all": "View all",
+        "account_details": "Account Details",
+        "quick_actions": "Quick Actions",
+        "submit_new": "+ Submit New Report",
+        "view_map": "View Campus Map"
+    },
+    "buildings": {
+        "title": "Buildings Management",
+        "subtitle": "Manage campus buildings and their locations.",
+        "add_building": "Add Building",
+        "edit_building": "Edit Building",
+        "delete_building": "Delete Building",
+        "name": "Building Name",
+        "description": "Description",
+        "location": "Location",
+        "delete_confirm": "Are you sure you want to delete this building?"
+    },
+    "users": {
+        "title": "User Management",
+        "subtitle": "Manage user roles and system access.",
+        "user": "User",
+        "role": "Role",
+        "joined": "Joined",
+        "actions": "Actions",
+        "switch_role": "Switch Role",
+        "delete_user": "Delete User",
+        "delete_confirm": "Are you sure you want to delete this user?",
+        "role_updated": "User role updated to {{role}}",
+        "user_deleted": "User deleted successfully"
+    },
+    "map": {
+        "title": "Interactive Map",
+        "subtitle": "Explore buildings and facilities across the campus.",
+        "search_placeholder": "Search locations...",
+        "loading": "Loading map data..."
+    }
+}

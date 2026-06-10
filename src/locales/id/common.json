@@ -1,0 +1,113 @@
+{
+    "common": {
+        "welcome": "Selamat Datang",
+        "save": "Simpan",
+        "cancel": "Batal",
+        "delete": "Hapus",
+        "edit": "Ubah",
+        "loading": "Memuat...",
+        "error": "Terjadi kesalahan",
+        "no_data": "Data tidak ditemukan",
+        "search": "Cari...",
+        "back": "Kembali",
+        "submit": "Kirim",
+        "sign_out": "Keluar"
+    },
+    "nav": {
+        "dashboard": "Dasbor",
+        "map": "Peta Interaktif",
+        "reports": "Laporan",
+        "buildings": "Bangunan",
+        "users": "Pengguna"
+    },
+    "auth": {
+        "login_title": "Masuk ke SIFKA",
+        "login_subtitle": "Manajemen Fasilitas & Pelaporan",
+        "register_title": "Buat akun baru",
+        "register_subtitle": "Gabung dengan Manajemen Fasilitas SIFKA",
+        "email": "Alamat Email",
+        "password": "Kata Sandi",
+        "full_name": "Nama Lengkap",
+        "confirm_password": "Konfirmasi Kata Sandi",
+        "sign_in": "Masuk",
+        "signing_in": "Masuk...",
+        "register": "Daftar",
+        "registering": "Membuat akun...",
+        "no_account": "Belum punya akun? Daftar",
+        "have_account": "Sudah punya akun? Masuk",
+        "remember_me": "Ingat saya"
+    },
+    "reports": {
+        "title": "Laporan Fasilitas",
+        "subtitle": "Pantau dan kelola permintaan pemeliharaan fasilitas.",
+        "new_report": "Laporan Baru",
+        "recent_reports": "Laporan Terbaru",
+        "status": {
+            "pending": "Menunggu",
+            "in_progress": "Sedang Diproses",
+            "resolved": "Selesai",
+            "rejected": "Ditolak"
+        },
+        "details": "Detail",
+        "description": "Deskripsi",
+        "location": "Lokasi Masalah",
+        "reported_by": "Dilaporkan Oleh",
+        "date_reported": "Tanggal Dilaporkan",
+        "related_facility": "Fasilitas Terkait",
+        "update_status": "Perbarui Status",
+        "create_title": "Buat Laporan Baru",
+        "report_title": "Judul Laporan",
+        "facility_optional": "Fasilitas (Opsional)",
+        "attach_photo": "Lampirkan Foto",
+        "pin_location": "Tandai Lokasi di Peta",
+        "submit_report": "Kirim Laporan",
+        "submitting": "Mengirim...",
+        "accuracy_warning": "Pastikan laporan Anda akurat untuk membantu staf menyelesaikannya dengan cepat."
+    },
+    "dashboard": {
+        "welcome": "Selamat datang kembali, {{name}}",
+        "subtitle": "Berikut adalah ringkasan pelaporan fasilitas hari ini.",
+        "stats": {
+            "total_reports": "Total Laporan",
+            "pending": "Menunggu",
+            "in_progress": "Diproses",
+            "resolved": "Selesai"
+        },
+        "recent_reports": "Laporan Terbaru",
+        "view_all": "Lihat semua",
+        "account_details": "Detail Akun",
+        "quick_actions": "Aksi Cepat",
+        "submit_new": "+ Buat Laporan Baru",
+        "view_map": "Lihat Peta Kampus"
+    },
+    "buildings": {
+        "title": "Manajemen Gedung",
+        "subtitle": "Kelola gedung kampus dan lokasinya.",
+        "add_building": "Tambah Gedung",
+        "edit_building": "Ubah Gedung",
+        "delete_building": "Hapus Gedung",
+        "name": "Nama Gedung",
+        "description": "Deskripsi",
+        "location": "Lokasi",
+        "delete_confirm": "Apakah Anda yakin ingin menghapus gedung ini?"
+    },
+    "users": {
+        "title": "Manajemen Pengguna",
+        "subtitle": "Kelola peran pengguna dan akses sistem.",
+        "user": "Pengguna",
+        "role": "Peran",
+        "joined": "Bergabung",
+        "actions": "Aksi",
+        "switch_role": "Ganti Peran",
+        "delete_user": "Hapus Pengguna",
+        "delete_confirm": "Apakah Anda yakin ingin menghapus pengguna ini?",
+        "role_updated": "Peran pengguna diperbarui menjadi {{role}}",
+        "user_deleted": "Pengguna berhasil dihapus"
+    },
+    "map": {
+        "title": "Peta Interaktif",
+        "subtitle": "Jelajahi gedung dan fasilitas di seluruh kampus.",
+        "search_placeholder": "Cari lokasi...",
+        "loading": "Memuat data peta..."
+    }
+}
