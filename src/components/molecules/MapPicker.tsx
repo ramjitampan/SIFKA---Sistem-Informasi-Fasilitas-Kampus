@@ -17,20 +17,20 @@ const defaultIcon = L.icon({
 L.Marker.prototype.options.icon = defaultIcon;
 
 interface MapPickerProps {
-    onLocationSelect: (lat: number, lng: number) => void;
+    onChange: (coords: { lat: number, lng: number }) => void;
     initialLocation?: [number, number] | { lat: number, lng: number };
 }
 
-const LocationMarker = ({ position, setPosition, onLocationSelect }: { 
+const LocationMarker = ({ position, setPosition, onChange }: { 
     position: [number, number] | null, 
     setPosition: (p: [number, number]) => void,
-    onLocationSelect: (lat: number, lng: number) => void
+    onChange: (coords: { lat: number, lng: number }) => void
 }) => {
     useMapEvents({
         click(e) {
             const newPos: [number, number] = [e.latlng.lat, e.latlng.lng];
             setPosition(newPos);
-            onLocationSelect(e.latlng.lat, e.latlng.lng);
+            onChange({ lat: e.latlng.lat, lng: e.latlng.lng });
         },
     });
 
@@ -39,7 +39,7 @@ const LocationMarker = ({ position, setPosition, onLocationSelect }: {
     );
 };
 
-const MapPicker: React.FC<MapPickerProps> = ({ onLocationSelect, initialLocation = [-0.9482, 100.3606] }) => {
+const MapPicker: React.FC<MapPickerProps> = ({ onChange, initialLocation = [-0.9482, 100.3606] }) => {
     const parsedInitialLocation: [number, number] = Array.isArray(initialLocation) 
         ? initialLocation 
         : [initialLocation.lat, initialLocation.lng];
@@ -60,7 +60,7 @@ const MapPicker: React.FC<MapPickerProps> = ({ onLocationSelect, initialLocation
                 <LocationMarker 
                     position={position} 
                     setPosition={setPosition} 
-                    onLocationSelect={onLocationSelect} 
+                    onChange={onChange} 
                 />
             </MapContainer>
         </div>

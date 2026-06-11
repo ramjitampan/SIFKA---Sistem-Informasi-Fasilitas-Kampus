@@ -13,11 +13,40 @@ export interface Building {
     coordinate: Coordinate;
 }
 
-export const useBuildings = () => {
+export interface BuildingsResponse {
+    data: Building[];
+    meta: {
+        current_page: number;
+        last_page: number;
+        per_page: number;
+        total: number;
+    };
+}
+
+export interface BuildingFilters {
+    page?: number;
+    search?: string;
+}
+
+export const useBuildings = (filters: BuildingFilters = {}) => {
     return useQuery({
-        queryKey: ['buildings'],
+        queryKey: ['buildings', filters],
         queryFn: async () => {
-            const { data } = await api.get('/buildings');
+            const params = new URLSearchParams();
+            if (filters.page) params.append('page', filters.page.toString());
+            if (filters.search) params.append('q', filters.search);
+            
+            const { data } = await api.get(`/buildings?${params.toString()}`);
+            return data as BuildingsResponse;
+        },
+    });
+};
+
+export const useAllBuildings = () => {
+    return useQuery({
+        queryKey: ['buildings', 'all'],
+        queryFn: async () => {
+            const { data } = await api.get('/buildings/search');
             return data.data as Building[];
         },
     });

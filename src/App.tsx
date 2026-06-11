@@ -11,6 +11,8 @@ import ReportsPage from './pages/reports/ReportsPage';
 import CreateReportPage from './pages/reports/CreateReportPage';
 import ReportShowPage from './pages/reports/ReportShowPage';
 import BuildingsPage from './pages/BuildingsPage';
+import FacilitiesPage from './pages/facilities/FacilitiesPage';
+import CategoriesPage from './pages/CategoriesPage';
 import UsersPage from './pages/UsersPage';
 import MainLayout from './components/layouts/MainLayout';
 
@@ -77,6 +79,22 @@ function App() {
                         element={
                             <ProtectedRoute roles={['staff', 'admin']}>
                                 <BuildingsPage />
+                            </ProtectedRoute>
+                        } 
+                    />
+                    <Route 
+                        path="/facilities" 
+                        element={
+                            <ProtectedRoute roles={['staff', 'admin']}>
+                                <FacilitiesPage />
+                            </ProtectedRoute>
+                        } 
+                    />
+                    <Route 
+                        path="/categories" 
+                        element={
+                            <ProtectedRoute roles={['admin']}>
+                                <CategoriesPage />
                             </ProtectedRoute>
                         } 
                     />

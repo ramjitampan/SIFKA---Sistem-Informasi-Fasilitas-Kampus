@@ -153,9 +153,9 @@ const CreateReportPage: React.FC = () => {
                             {t('reports.pin_location')}
                         </label>
                         <div className="h-[400px] w-full">
-                            <MapPicker onLocationSelect={(lat, lng) => {
-                                setLatitude(lat);
-                                setLongitude(lng);
+                            <MapPicker onChange={(coords) => {
+                                setLatitude(coords.lat);
+                                setLongitude(coords.lng);
                             }} />
                         </div>
                         <p className="text-xs text-slate-500 dark:text-slate-400">

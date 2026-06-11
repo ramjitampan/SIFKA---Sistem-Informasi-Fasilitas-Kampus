@@ -55,7 +55,7 @@ const BuildingForm: React.FC<BuildingFormProps> = ({ initialData, onSubmit }) =>
                 <div className="h-64 w-full rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
                     <MapPicker 
                         initialLocation={coordinate}
-                        onLocationSelect={(lat, lng) => setCoordinate({ lat, lng })} 
+                        onChange={(coord) => setCoordinate(coord)} 
                     />
                 </div>
                 <div className="flex justify-between text-[10px] text-slate-500 font-mono">

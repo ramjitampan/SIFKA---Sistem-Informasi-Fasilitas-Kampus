@@ -39,6 +39,9 @@ const Modal: React.FC<ModalProps> = ({
                             <Dialog.Title className="text-lg font-bold text-slate-900 dark:text-white">
                                 {title}
                             </Dialog.Title>
+                            <Dialog.Description className="sr-only">
+                                {title} dialog
+                            </Dialog.Description>
                             <Dialog.Close asChild>
                                 <button className="rounded-full p-1.5 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
                                     <X size={20} />

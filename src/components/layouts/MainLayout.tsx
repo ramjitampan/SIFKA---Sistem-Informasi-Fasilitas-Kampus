@@ -9,7 +9,9 @@ import {
     X, 
     LogOut,
     Building2,
-    Languages
+    Languages,
+    MapPin,
+    Tag
 } from 'lucide-react';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useAuth } from '../../hooks/useAuth';
@@ -39,6 +41,8 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         { name: t('nav.map'), href: '/map', icon: MapIcon, roles: ['student', 'staff', 'admin'] },
         { name: t('nav.reports'), href: '/reports', icon: FileText, roles: ['student', 'staff', 'admin'] },
         { name: t('nav.buildings'), href: '/buildings', icon: Building2, roles: ['staff', 'admin'] },
+        { name: t('nav.facilities'), href: '/facilities', icon: MapPin, roles: ['staff', 'admin'] },
+        { name: t('nav.categories'), href: '/categories', icon: Tag, roles: ['admin'] },
         { name: t('nav.users'), href: '/users', icon: Users, roles: ['admin'] },
     ];
 

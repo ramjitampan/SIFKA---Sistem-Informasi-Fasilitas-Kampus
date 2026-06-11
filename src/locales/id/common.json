@@ -11,13 +11,16 @@
         "search": "Cari...",
         "back": "Kembali",
         "submit": "Kirim",
-        "sign_out": "Keluar"
+        "sign_out": "Keluar",
+        "actions": "Aksi"
     },
     "nav": {
         "dashboard": "Dasbor",
         "map": "Peta Interaktif",
         "reports": "Laporan",
         "buildings": "Bangunan",
+        "facilities": "Fasilitas",
+        "categories": "Kategori",
         "users": "Pengguna"
     },
     "auth": {
@@ -36,6 +39,31 @@
         "no_account": "Belum punya akun? Daftar",
         "have_account": "Sudah punya akun? Masuk",
         "remember_me": "Ingat saya"
+    },
+    "categories": {
+        "title": "Manajemen Kategori",
+        "subtitle": "Kelola kategori fasilitas dan penanda.",
+        "add_button": "Tambah Kategori",
+        "category": "Kategori",
+        "name": "Nama Kategori",
+        "icon": "Ikon Penanda",
+        "color": "Kode Warna",
+        "facilities_count": "Fasilitas",
+        "delete_confirm": "Apakah Anda yakin ingin menghapus kategori ini? Penghapusan akan gagal jika ada fasilitas yang terhubung.",
+        "deleted": "Kategori berhasil dihapus"
+    },
+    "facilities": {
+        "title": "Manajemen Fasilitas",
+        "subtitle": "Kelola fasilitas spesifik dan titik lokasi.",
+        "add_button": "Tambah Fasilitas",
+        "facility": "Fasilitas",
+        "name": "Nama Fasilitas",
+        "description": "Deskripsi",
+        "category": "Kategori",
+        "building": "Gedung",
+        "location": "Lokasi",
+        "delete_confirm": "Apakah Anda yakin ingin menghapus fasilitas ini?",
+        "deleted": "Fasilitas berhasil dihapus"
     },
     "reports": {
         "title": "Laporan Fasilitas",

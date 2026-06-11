@@ -1,2 +1,8 @@
 ﻿node_modules/
 dist/
+
+
+# --- MkDocs ---
+site/
+*/__pycache__/
+*.pyc

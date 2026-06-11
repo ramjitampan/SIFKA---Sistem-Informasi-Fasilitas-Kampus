@@ -8,12 +8,15 @@ import Card from '../components/atoms/Card';
 import { useTranslation } from 'react-i18next';
 
 const MapPage: React.FC = () => {
-    const { data: buildings = [], isLoading: isLoadingBuildings } = useBuildings();
-    const { data: facilities = [], isLoading: isLoadingFacilities } = useFacilities();
+    const { data: buildingsData, isLoading: isLoadingBuildings } = useBuildings();
+    const { data: facilitiesData, isLoading: isLoadingFacilities } = useFacilities();
     const [searchQuery, setSearchQuery] = useState('');
     const { t } = useTranslation();
 
     const isLoading = isLoadingBuildings || isLoadingFacilities;
+
+    const buildings = buildingsData?.data || [];
+    const facilities = facilitiesData?.data || [];
 
     // Basic client-side filter for now, Meilisearch integration can be added to a dedicated search bar
     const filteredBuildings = buildings.filter(b => 

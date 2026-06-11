@@ -11,13 +11,16 @@
         "search": "Search...",
         "back": "Back",
         "submit": "Submit",
-        "sign_out": "Sign out"
+        "sign_out": "Sign out",
+        "actions": "Actions"
     },
     "nav": {
         "dashboard": "Dashboard",
         "map": "Interactive Map",
         "reports": "Reports",
         "buildings": "Buildings",
+        "facilities": "Facilities",
+        "categories": "Categories",
         "users": "Users"
     },
     "auth": {
@@ -36,6 +39,31 @@
         "no_account": "Don't have an account? Register",
         "have_account": "Already have an account? Sign in",
         "remember_me": "Remember me"
+    },
+    "categories": {
+        "title": "Category Management",
+        "subtitle": "Manage facility categories and markers.",
+        "add_button": "Add Category",
+        "category": "Category",
+        "name": "Category Name",
+        "icon": "Icon Marker",
+        "color": "Color Code",
+        "facilities_count": "Facilities",
+        "delete_confirm": "Are you sure you want to delete this category? This will fail if facilities are attached.",
+        "deleted": "Category deleted successfully"
+    },
+    "facilities": {
+        "title": "Facility Management",
+        "subtitle": "Manage specific facilities and points of interest.",
+        "add_button": "Add Facility",
+        "facility": "Facility",
+        "name": "Facility Name",
+        "description": "Description",
+        "category": "Category",
+        "building": "Building",
+        "location": "Location",
+        "delete_confirm": "Are you sure you want to delete this facility?",
+        "deleted": "Facility deleted successfully"
     },
     "reports": {
         "title": "Facility Reports",
