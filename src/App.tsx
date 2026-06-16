@@ -14,6 +14,9 @@ import BuildingsPage from './pages/BuildingsPage';
 import FacilitiesPage from './pages/facilities/FacilitiesPage';
 import CategoriesPage from './pages/CategoriesPage';
 import UsersPage from './pages/UsersPage';
+import AdvancedSearchPage from './pages/AdvancedSearchPage';
+import BuildingShowPage from './pages/buildings/BuildingShowPage';
+import FacilityShowPage from './pages/facilities/FacilityShowPage';
 import MainLayout from './components/layouts/MainLayout';
 
 const ProtectedRoute = ({ children, roles }: { children: React.ReactNode, roles?: string[] }) => {
@@ -83,10 +86,26 @@ function App() {
                         } 
                     />
                     <Route 
+                        path="/buildings/:id" 
+                        element={
+                            <ProtectedRoute roles={['staff', 'admin']}>
+                                <BuildingShowPage />
+                            </ProtectedRoute>
+                        } 
+                    />
+                    <Route 
                         path="/facilities" 
                         element={
                             <ProtectedRoute roles={['staff', 'admin']}>
                                 <FacilitiesPage />
+                            </ProtectedRoute>
+                        } 
+                    />
+                    <Route 
+                        path="/facilities/:id" 
+                        element={
+                            <ProtectedRoute roles={['staff', 'admin']}>
+                                <FacilityShowPage />
                             </ProtectedRoute>
                         } 
                     />
@@ -103,6 +122,14 @@ function App() {
                         element={
                             <ProtectedRoute roles={['admin']}>
                                 <UsersPage />
+                            </ProtectedRoute>
+                        } 
+                    />
+                    <Route 
+                        path="/search" 
+                        element={
+                            <ProtectedRoute>
+                                <AdvancedSearchPage />
                             </ProtectedRoute>
                         } 
                     />

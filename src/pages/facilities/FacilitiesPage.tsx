@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useFacilities, useCreateFacility, useUpdateFacility, useDeleteFacility, Facility, FacilityFilters } from '../../hooks/useFacilities';
 import { 
     MapPin, 
@@ -22,8 +23,12 @@ import { useTranslation } from 'react-i18next';
 
 const FacilitiesPage: React.FC = () => {
     const { t } = useTranslation();
+    const [searchParams] = useSearchParams();
+    const q = searchParams.get('q') || '';
+    
     const [filters, setFilters] = useState<FacilityFilters>({
-        page: 1
+        page: 1,
+        search: q
     });
 
     const { data: facilitiesData, isLoading } = useFacilities(filters);
@@ -33,7 +38,7 @@ const FacilitiesPage: React.FC = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingFacility, setEditingFacility] = useState<Facility | null>(null);
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState(q);
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();

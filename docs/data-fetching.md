@@ -8,13 +8,12 @@ We use `TanStack Query` for server state and `Zustand` for local UI state.
 - **Caching:** Configure unique query keys for every request to enable automatic cache invalidation and background refetching.
 - **Global State:** Reserve `Zustand` for non-server state (e.g., user session, UI theme, sidebar toggle).
 
-## Admin Resource Display Pattern
-When creating pages for administrative data (e.g., user/facility/report lists):
+## Data Fetching Wrapper (`QueryStateHandler`)
+To ensure consistency across pages, use the `<QueryStateHandler />` wrapper for all data fetching:
+- **Loading:** Automatically display a skeleton loader or a spinner.
+- **Error:** Automatically display user-friendly error messages from the API.
+- **Empty State:** Handle empty API responses (e.g., `[]` or `null`) using a consistent `EmptyState` UI component.
 
-1.  **Data Fetching:** Use a custom hook (`use{Resource}s`) that returns `data`, `isLoading`, and `error`.
-2.  **Layout:** Implement a standard `ListContainer` organisms component that handles the base padding and heading.
-3.  **Table/Grid:** Use a shared table component to maintain consistent styling across all admin views.
-4.  **Actions:** Include standard CRUD action buttons in the last column (`edit`, `delete` with confirmation).
-5.  **State Synchronization:** After any mutation (create/update/delete), use `queryClient.invalidateQueries` to ensure the list reflects the latest data immediately.
-
-*Example reference: Observe `FE_SIFKA/src/pages/Users.tsx` for the canonical implementation of the admin data management pattern.*
+## Mutation & Interaction Feedback
+- **Notifications:** Use `react-hot-toast` for feedback. Ensure the `<Toaster />` component is mounted at the app root.
+- **Mutation Pattern:** Use `toast.promise()` for all `useMutation` hooks (submissions, deletions, updates) to standardize loading/success/error handlers.

@@ -7,12 +7,15 @@ Components are built using atomic design principles, leveraging Radix UI for acc
 - **Button:**
     - Variants: `primary`, `secondary`, `outline`, `ghost`, `destructive`
     - Sizes: `sm`, `md`, `lg`
+    - **Loading State:** Must implement a `loading` prop that disables the button and displays a spinner.
 - **Input:**
     - Variants: `default`, `error`, `disabled`
 - **Card:**
     - Container for grouped content.
 - **Modal:**
     - Built on `Radix UI Dialog`.
+- **EmptyState:**
+    - A flexible, reusable component accepting `icon`, `title`, and `description` props.
 
 ## Guidelines
 - **Props:** Use TypeScript interfaces for all components.

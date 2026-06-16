@@ -25,8 +25,20 @@ export interface BuildingsResponse {
 
 export interface BuildingFilters {
     page?: number;
-    search?: string;
+    q?: string;
 }
+
+export const useBuilding = (id: string | number | undefined) => {
+    return useQuery({
+        queryKey: ['buildings', id],
+        queryFn: async () => {
+            if (!id) throw new Error('Building ID is required');
+            const { data } = await api.get(`/buildings/${id}`);
+            return data.data as Building;
+        },
+        enabled: !!id,
+    });
+};
 
 export const useBuildings = (filters: BuildingFilters = {}) => {
     return useQuery({
@@ -34,7 +46,7 @@ export const useBuildings = (filters: BuildingFilters = {}) => {
         queryFn: async () => {
             const params = new URLSearchParams();
             if (filters.page) params.append('page', filters.page.toString());
-            if (filters.search) params.append('q', filters.search);
+            if (filters.q) params.append('q', filters.q);
             
             const { data } = await api.get(`/buildings?${params.toString()}`);
             return data as BuildingsResponse;

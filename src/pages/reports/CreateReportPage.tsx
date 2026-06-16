@@ -21,7 +21,8 @@ import { useTranslation } from 'react-i18next';
 const CreateReportPage: React.FC = () => {
     const navigate = useNavigate();
     const { mutate: createReport, isPending } = useCreateReport();
-    const { data: facilities = [] } = useFacilities();
+    const { data: facilitiesData } = useFacilities();
+    const facilities = facilitiesData?.data ?? [];
     const { t } = useTranslation();
 
     const [title, setTitle] = useState('');

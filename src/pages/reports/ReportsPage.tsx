@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import { useSearchParams, Link } from 'react-router-dom';
 import { useReports, useReportUpdates, useDeleteReport } from '../../hooks/useReports';
+import { useTranslation } from 'react-i18next';
+import { useAuthStore } from '../../store/useAuthStore';
 import { 
     Clock, 
     CheckCircle2, 
@@ -15,9 +18,6 @@ import {
     Trash2
 } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { Link } from 'react-router-dom';
-import { useAuthStore } from '../../store/useAuthStore';
-import { useTranslation } from 'react-i18next';
 import Badge from '../../components/atoms/Badge';
 import Button from '../../components/atoms/Button';
 import Card, { CardHeader, CardContent } from '../../components/atoms/Card';
@@ -29,10 +29,16 @@ const statusConfig = {
     rejected: { label: 'Rejected', icon: XCircle, variant: 'error' as const },
 };
 
+
 const ReportsPage: React.FC = () => {
     const { t } = useTranslation();
+    const [searchParams] = useSearchParams();
+    const q = searchParams.get('q') || '';
     const [page, setPage] = useState(1);
     const [statusFilter, setStatusFilter] = useState<string | undefined>();
+    const [searchTerm, setSearchTerm] = useState(q);
+    
+    // Note: ReportsPage's useReports hook logic needs to be verified for supporting search.
     const { data: reportsData, isLoading } = useReports(page, statusFilter);
     const { mutate: deleteReport } = useDeleteReport();
     const { user } = useAuthStore();

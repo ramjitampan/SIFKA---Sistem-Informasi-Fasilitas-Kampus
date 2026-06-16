@@ -45,16 +45,30 @@ export interface ReportsResponse {
     };
 }
 
-export const useReports = (page = 1, status?: string) => {
+export const useReports = (page = 1, status?: string, unseenOnly = false) => {
     return useQuery({
-        queryKey: ['reports', page, status],
+        queryKey: ['reports', page, status, unseenOnly],
         queryFn: async () => {
             const params = new URLSearchParams();
             params.append('page', page.toString());
             if (status) params.append('status', status);
+            if (unseenOnly) params.append('unseen_only', '1');
             
             const { data } = await api.get(`/reports?${params.toString()}`);
             return data as ReportsResponse;
+        },
+    });
+};
+
+export const useMarkReportAsSeen = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (id: number) => {
+            await api.post(`/reports/${id}/seen`);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['reports'] });
         },
     });
 };

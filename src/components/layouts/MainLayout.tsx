@@ -16,7 +16,7 @@ import {
 import { useAuthStore } from '../../store/useAuthStore';
 import { useAuth } from '../../hooks/useAuth';
 import { useTranslation } from 'react-i18next';
-import GlobalSearch from '../molecules/GlobalSearch';
+import IntegratedSearch from '../molecules/IntegratedSearch';
 import ThemeToggle from '../molecules/ThemeToggle';
 import LanguageSwitcher from '../molecules/LanguageSwitcher';
 
@@ -25,6 +25,7 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         const savedState = localStorage.getItem('sidebarOpen');
         return savedState !== null ? JSON.parse(savedState) : false;
     });
+    const [isSearchActive, setIsSearchActive] = useState(false);
     const { user } = useAuthStore();
     const { logout } = useAuth();
     const { t } = useTranslation();
@@ -118,23 +119,27 @@ const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             {/* Main Content */}
             <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
                 <header className="h-16 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between px-4 lg:px-8">
-                    <button 
-                        onClick={toggleSidebar} 
-                        className={`text-slate-500 lg:hidden ${isSidebarOpen ? 'hidden' : 'block'}`}
-                    >
-                        <Menu size={24} />
-                    </button>
+                    {!isSearchActive && (
+                        <button 
+                            onClick={toggleSidebar} 
+                            className={`text-slate-500 lg:hidden ${isSidebarOpen ? 'hidden' : 'block'}`}
+                        >
+                            <Menu size={24} />
+                        </button>
+                    )}
                     
-                    <div className="flex-1" />
+                    {!isSearchActive && <div className="flex-1" />}
 
-                    <div className="flex items-center space-x-2 md:space-x-4">
-                        <GlobalSearch />
+                    <div className={`flex items-center space-x-2 md:space-x-4 ${isSearchActive ? 'w-full' : ''}`}>
+                        <IntegratedSearch onActiveChange={setIsSearchActive} />
                         
-                        <div className="h-6 w-px bg-slate-200 dark:bg-slate-700" />
-                        
-                        <LanguageSwitcher />
-
-                        <ThemeToggle />
+                        {!isSearchActive && (
+                            <>
+                                <div className="h-6 w-px bg-slate-200 dark:bg-slate-700" />
+                                <LanguageSwitcher />
+                                <ThemeToggle />
+                            </>
+                        )}
                     </div>
                 </header>
 

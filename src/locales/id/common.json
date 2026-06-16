@@ -137,5 +137,8 @@
         "subtitle": "Jelajahi gedung dan fasilitas di seluruh kampus.",
         "search_placeholder": "Cari lokasi...",
         "loading": "Memuat data peta..."
+    },
+    "advanced_search": {
+        "title": "Pencarian Lanjutan"
     }
 }

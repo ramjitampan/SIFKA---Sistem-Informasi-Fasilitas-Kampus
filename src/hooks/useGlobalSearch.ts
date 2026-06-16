@@ -19,9 +19,9 @@ export const useGlobalSearch = (query: string) => {
             }
 
             const [buildingsRes, facilitiesRes, reportsRes] = await Promise.all([
-                api.get(`/buildings/search?q=${query}`),
-                api.get(`/facilities/search?q=${query}`),
-                api.get(`/reports/search?q=${query}`),
+                api.get(`/buildings?q=${query}`),
+                api.get(`/facilities?q=${query}`),
+                api.get(`/reports?q=${query}`),
             ]);
 
             return {

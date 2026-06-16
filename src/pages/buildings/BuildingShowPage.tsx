@@ -1,15 +1,13 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Loader2, Building2 } from 'lucide-react';
-import { useBuildings } from '../../hooks/useBuildings';
+import { useBuilding } from '../../hooks/useBuildings';
 import Card from '../../components/atoms/Card';
 
 const BuildingShowPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
-    const { data: buildings, isLoading } = useBuildings();
+    const { data: building, isLoading } = useBuilding(id);
     
-    const building = buildings?.find(b => b.id.toString() === id);
-
     if (isLoading) return <div className="h-full flex items-center justify-center"><Loader2 className="animate-spin" /></div>;
 
     return (

@@ -11,10 +11,10 @@ export const useAuth = () => {
     const loginMutation = useMutation({
         mutationFn: async (credentials: any) => {
             const { data } = await api.post('/login', credentials);
-            return data;
+            return { data, remember: credentials.remember };
         },
-        onSuccess: (data) => {
-            setAuth(data.user, data.access_token);
+        onSuccess: ({ data, remember }) => {
+            setAuth(data.user, data.access_token, remember);
             toast.success('Successfully logged in');
             navigate('/');
         },
@@ -27,10 +27,10 @@ export const useAuth = () => {
     const registerMutation = useMutation({
         mutationFn: async (userData: any) => {
             const { data } = await api.post('/register', userData);
-            return data;
+            return { data };
         },
-        onSuccess: (data) => {
-            setAuth(data.user, data.access_token);
+        onSuccess: ({ data }) => {
+            setAuth(data.user, data.access_token, false);
             toast.success('Registration successful');
             navigate('/');
         },

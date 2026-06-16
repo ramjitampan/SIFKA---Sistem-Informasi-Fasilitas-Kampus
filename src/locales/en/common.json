@@ -137,5 +137,8 @@
         "subtitle": "Explore buildings and facilities across the campus.",
         "search_placeholder": "Search locations...",
         "loading": "Loading map data..."
+    },
+    "advanced_search": {
+        "title": "Advanced Search"
     }
 }
