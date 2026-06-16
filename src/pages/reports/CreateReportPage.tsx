@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 
 const CreateReportPage: React.FC = () => {
     const navigate = useNavigate();
-    const { mutate: createReport, isPending } = useCreateReport();
+    const { mutateAsync: createReportAsync, isPending } = useCreateReport();
     const { data: facilitiesData } = useFacilities();
     const facilities = facilitiesData?.data ?? [];
     const { t } = useTranslation();
@@ -45,7 +45,7 @@ const CreateReportPage: React.FC = () => {
         }
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (!latitude || !longitude) {
@@ -61,12 +61,20 @@ const CreateReportPage: React.FC = () => {
         if (facilityId) formData.append('facility_id', facilityId);
         if (image) formData.append('image', image);
 
-        createReport(formData, {
-            onSuccess: () => {
-                toast.success(t('common.submit') + ' ' + t('reports.status.resolved')); // Fallback toast or add dedicated key
-                navigate('/reports');
-            },
+        const promise = createReportAsync(formData);
+
+        toast.promise(promise, {
+            loading: 'Submitting report...',
+            success: 'Report submitted successfully!',
+            error: (err) => err?.response?.data?.message || 'Failed to submit report',
         });
+
+        try {
+            await promise;
+            navigate('/reports');
+        } catch (error) {
+            // Error handled by toast.promise
+        }
     };
 
     return (

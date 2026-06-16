@@ -5,6 +5,7 @@ import Button from '../../components/atoms/Button';
 import Input from '../../components/atoms/Input';
 import Card, { CardContent } from '../../components/atoms/Card';
 import { useTranslation } from 'react-i18next';
+import toast from 'react-hot-toast';
 import ThemeToggle from '../../components/molecules/ThemeToggle';
 import LanguageSwitcher from '../../components/molecules/LanguageSwitcher';
 
@@ -17,7 +18,11 @@ const LoginPage: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        login({ email, password, remember });
+        toast.promise(login({ email, password, remember }), {
+            loading: 'Logging in...',
+            success: 'Successfully logged in!',
+            error: (err) => err?.response?.data?.message || 'Login failed',
+        });
     };
 
     return (

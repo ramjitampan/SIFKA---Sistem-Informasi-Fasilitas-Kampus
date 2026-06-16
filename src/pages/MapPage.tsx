@@ -2,29 +2,26 @@ import React, { useState } from 'react';
 import MapView from '../components/organisms/MapView';
 import { useBuildings } from '../hooks/useBuildings';
 import { useFacilities } from '../hooks/useFacilities';
-import { Search, Loader2 } from 'lucide-react';
+import { Search, Map as MapIcon } from 'lucide-react';
 import Input from '../components/atoms/Input';
-import Card from '../components/atoms/Card';
 import { useTranslation } from 'react-i18next';
+import QueryStateHandler from '../components/atoms/QueryStateHandler';
 
 const MapPage: React.FC = () => {
-    const { data: buildingsData, isLoading: isLoadingBuildings } = useBuildings();
-    const { data: facilitiesData, isLoading: isLoadingFacilities } = useFacilities();
+    const { data: buildingsData, isLoading: isLoadingBuildings, isError: isErrorBuildings, error: errorBuildings } = useBuildings();
+    const { data: facilitiesData, isLoading: isLoadingFacilities, isError: isErrorFacilities, error: errorFacilities } = useFacilities();
     const [searchQuery, setSearchQuery] = useState('');
     const { t } = useTranslation();
 
     const isLoading = isLoadingBuildings || isLoadingFacilities;
-
-    const buildings = buildingsData?.data || [];
-    const facilities = facilitiesData?.data || [];
-
-    // Basic client-side filter for now, Meilisearch integration can be added to a dedicated search bar
-    const filteredBuildings = buildings.filter(b => 
-        b.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    const filteredFacilities = facilities.filter(f => 
-        f.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const isError = isErrorBuildings || isErrorFacilities;
+    const error = errorBuildings || errorFacilities;
+    
+    // Combined data for QueryStateHandler
+    const data = buildingsData && facilitiesData ? { 
+        buildings: buildingsData.data, 
+        facilities: facilitiesData.data 
+    } : null;
 
     return (
         <div className="space-y-6">
@@ -47,22 +44,35 @@ const MapPage: React.FC = () => {
                 </div>
             </div>
 
-            {isLoading ? (
-                <Card className="h-[calc(100vh-200px)] w-full flex items-center justify-center">
-                    <div className="text-center">
-                        <Loader2 className="h-10 w-10 animate-spin text-indigo-600 mx-auto mb-4" />
-                        <p className="text-slate-500">{t('map.loading')}</p>
-                    </div>
-                </Card>
-            ) : (
-                <MapView 
-                    buildings={filteredBuildings} 
-                    facilities={filteredFacilities} 
-                />
-            )}
+            <QueryStateHandler
+                isLoading={isLoading}
+                isError={isError}
+                error={error}
+                data={data}
+                emptyState={{
+                    icon: MapIcon,
+                    title: 'Map Data Unavailable',
+                    description: 'We could not load the map data at this time.'
+                }}
+            >
+                {(resolvedData) => {
+                    const filteredBuildings = resolvedData.buildings.filter(b => 
+                        b.name.toLowerCase().includes(searchQuery.toLowerCase())
+                    );
+                    const filteredFacilities = resolvedData.facilities.filter(f => 
+                        f.name.toLowerCase().includes(searchQuery.toLowerCase())
+                    );
+
+                    return (
+                        <MapView 
+                            buildings={filteredBuildings} 
+                            facilities={filteredFacilities} 
+                        />
+                    );
+                }}
+            </QueryStateHandler>
         </div>
     );
 };
 
 export default MapPage;
-

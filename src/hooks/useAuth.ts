@@ -15,12 +15,7 @@ export const useAuth = () => {
         },
         onSuccess: ({ data, remember }) => {
             setAuth(data.user, data.access_token, remember);
-            toast.success('Successfully logged in');
             navigate('/');
-        },
-        onError: (error: any) => {
-            const message = error.response?.data?.message || 'Login failed';
-            toast.error(message);
         },
     });
 
@@ -31,12 +26,7 @@ export const useAuth = () => {
         },
         onSuccess: ({ data }) => {
             setAuth(data.user, data.access_token, false);
-            toast.success('Registration successful');
             navigate('/');
-        },
-        onError: (error: any) => {
-            const message = error.response?.data?.message || 'Registration failed';
-            toast.error(message);
         },
     });
 
@@ -46,16 +36,15 @@ export const useAuth = () => {
         },
         onSuccess: () => {
             clearAuth();
-            toast.success('Logged out successfully');
             navigate('/login');
         },
     });
 
     return {
-        login: loginMutation.mutate,
+        login: loginMutation.mutateAsync,
         isLoggingIn: loginMutation.isPending,
-        register: registerMutation.mutate,
+        register: registerMutation.mutateAsync,
         isRegistering: registerMutation.isPending,
-        logout: logoutMutation.mutate,
+        logout: logoutMutation.mutateAsync,
     };
 };

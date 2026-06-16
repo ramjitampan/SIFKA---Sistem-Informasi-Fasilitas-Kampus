@@ -2,14 +2,15 @@ import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Card, { CardContent } from '../components/atoms/Card';
 import Input from '../components/atoms/Input';
-import { Search, SlidersHorizontal, Loader2, FileText } from 'lucide-react';
+import { Search, SlidersHorizontal, FileText, PackageOpen } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAdvancedSearch } from '../hooks/useAdvancedSearch';
+import QueryStateHandler from '../components/atoms/QueryStateHandler';
 
 const AdvancedSearchPage: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const { t } = useTranslation();
-    const { data, isLoading } = useAdvancedSearch(searchParams);
+    const { data, isLoading, isError, error } = useAdvancedSearch(searchParams);
 
     const updateFilter = (key: string, value: string) => {
         const newParams = new URLSearchParams(searchParams);
@@ -62,26 +63,31 @@ const AdvancedSearchPage: React.FC = () => {
 
                 <Card className="lg:col-span-3">
                     <CardContent className="p-6">
-                        {isLoading ? (
-                            <div className="text-center py-12"><Loader2 className="animate-spin h-8 w-8 mx-auto text-indigo-600" /></div>
-                        ) : data?.length > 0 ? (
-                            <div className="space-y-4">
-                                {data.map((item: any) => (
-                                    <div key={item.id} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg flex items-center">
-                                        <FileText className="mr-4 text-slate-400" />
-                                        <div>
-                                            <p className="font-medium">{item.title || item.name}</p>
-                                            <p className="text-sm text-slate-500">{item.description}</p>
+                        <QueryStateHandler
+                            isLoading={isLoading}
+                            isError={isError}
+                            error={error}
+                            data={data}
+                            emptyState={{
+                                icon: PackageOpen,
+                                title: 'No results found',
+                                description: 'Try adjusting your filters or search term.'
+                            }}
+                        >
+                            {(results) => (
+                                <div className="space-y-4">
+                                    {results.map((item: any) => (
+                                        <div key={item.id} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg flex items-center">
+                                            <FileText className="mr-4 text-slate-400" />
+                                            <div>
+                                                <p className="font-medium text-slate-900 dark:text-white">{item.title || item.name}</p>
+                                                <p className="text-sm text-slate-500">{item.description}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
-                            </div>
-                        ) : (
-                            <div className="text-center py-12 text-slate-500">
-                                <Search className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                                <p>No results found with current filters.</p>
-                            </div>
-                        )}
+                                    ))}
+                                </div>
+                            )}
+                        </QueryStateHandler>
                     </CardContent>
                 </Card>
             </div>

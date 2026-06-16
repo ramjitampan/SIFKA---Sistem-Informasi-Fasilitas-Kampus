@@ -50,6 +50,18 @@ export const useFacilities = (filters: FacilityFilters = {}) => {
     });
 };
 
+export const useFacility = (id: string | number | undefined) => {
+    return useQuery({
+        queryKey: ['facilities', id],
+        queryFn: async () => {
+            if (!id) throw new Error('Facility ID is required');
+            const { data } = await api.get(`/facilities/${id}`);
+            return data.data as Facility;
+        },
+        enabled: !!id,
+    });
+};
+
 export const useSearchFacilities = (query: string) => {
     return useQuery({
         queryKey: ['facilities', 'search', query],

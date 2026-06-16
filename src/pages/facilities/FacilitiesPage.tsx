@@ -4,20 +4,20 @@ import { useFacilities, useCreateFacility, useUpdateFacility, useDeleteFacility,
 import { 
     MapPin, 
     Trash2, 
-    Loader2, 
     Plus, 
     Edit, 
     ChevronLeft, 
     ChevronRight,
     Search,
     Building2,
-    Tag
+    PackageOpen
 } from 'lucide-react';
 import Button from '../../components/atoms/Button';
 import Card, { CardContent } from '../../components/atoms/Card';
 import Input from '../../components/atoms/Input';
 import Modal from '../../components/atoms/Modal';
 import FacilityForm from '../../components/molecules/FacilityForm';
+import QueryStateHandler from '../../components/atoms/QueryStateHandler';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
@@ -31,10 +31,10 @@ const FacilitiesPage: React.FC = () => {
         search: q
     });
 
-    const { data: facilitiesData, isLoading } = useFacilities(filters);
-    const { mutate: createFacility, isPending: isCreating } = useCreateFacility();
-    const { mutate: updateFacility, isPending: isUpdating } = useUpdateFacility();
-    const { mutate: deleteFacility, isPending: isDeleting } = useDeleteFacility();
+    const { data: facilitiesData, isLoading, isError, error } = useFacilities(filters);
+    const { mutateAsync: createFacility, isPending: isCreating } = useCreateFacility();
+    const { mutateAsync: updateFacility, isPending: isUpdating } = useUpdateFacility();
+    const { mutateAsync: deleteFacility, isPending: isDeleting } = useDeleteFacility();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingFacility, setEditingFacility] = useState<Facility | null>(null);
@@ -57,28 +57,30 @@ const FacilitiesPage: React.FC = () => {
 
     const handleDelete = (id: number) => {
         if (window.confirm(t('facilities.delete_confirm'))) {
-            deleteFacility(id, {
-                onSuccess: () => toast.success(t('facilities.deleted')),
-                onError: (error: any) => toast.error(error.response?.data?.message || 'Failed to delete facility'),
+            toast.promise(deleteFacility(id), {
+                loading: 'Deleting facility...',
+                success: 'Facility deleted successfully',
+                error: (err) => err?.response?.data?.message || 'Failed to delete facility',
             });
         }
     };
 
-    const handleFormSubmit = (data: any) => {
-        if (editingFacility) {
-            updateFacility({ id: editingFacility.id, ...data }, {
-                onSuccess: () => {
-                    toast.success('Facility updated successfully');
-                    setIsModalOpen(false);
-                },
-            });
-        } else {
-            createFacility(data, {
-                onSuccess: () => {
-                    toast.success('Facility created successfully');
-                    setIsModalOpen(false);
-                },
-            });
+    const handleFormSubmit = async (data: any) => {
+        const promise = editingFacility 
+            ? updateFacility({ id: editingFacility.id, ...data })
+            : createFacility(data);
+
+        toast.promise(promise, {
+            loading: editingFacility ? 'Updating facility...' : 'Creating facility...',
+            success: editingFacility ? 'Facility updated successfully' : 'Facility created successfully',
+            error: (err) => err?.response?.data?.message || `Failed to ${editingFacility ? 'update' : 'create'} facility`,
+        });
+
+        try {
+            await promise;
+            setIsModalOpen(false);
+        } catch (error) {
+            // Error handled by toast.promise
         }
     };
 
@@ -108,107 +110,121 @@ const FacilitiesPage: React.FC = () => {
                     </form>
                 </CardContent>
 
-                {isLoading ? (
-                    <div className="p-12 flex justify-center">
-                        <Loader2 className="h-8 w-8 animate-spin text-indigo-600" />
-                    </div>
-                ) : (
-                    <>
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-left border-collapse">
-                                <thead>
-                                    <tr className="border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
-                                        <th className="p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('facilities.facility')}</th>
-                                        <th className="p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('facilities.category')}</th>
-                                        <th className="p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('facilities.building')}</th>
-                                        <th className="p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('facilities.location')}</th>
-                                        <th className="p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">{t('common.actions')}</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
-                                    {facilitiesData?.data.map((facility) => (
-                                        <tr key={facility.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-700/20 transition-colors">
-                                            <td className="p-4">
-                                                <div className="flex flex-col">
-                                                    <span className="font-medium text-slate-900 dark:text-white">{facility.name}</span>
-                                                    <span className="text-xs text-slate-500 truncate max-w-xs">{facility.description}</span>
-                                                </div>
-                                            </td>
-                                            <td className="p-4">
-                                                {facility.category && (
-                                                    <div className="flex items-center space-x-2">
-                                                        <div 
-                                                            className="h-3 w-3 rounded-full"
-                                                            style={{ backgroundColor: facility.category.color_code }}
-                                                        />
-                                                        <span className="text-sm text-slate-600 dark:text-slate-400">{facility.category.name}</span>
-                                                    </div>
-                                                )}
-                                            </td>
-                                            <td className="p-4">
-                                                <div className="flex items-center text-slate-600 dark:text-slate-400">
-                                                    <Building2 size={16} className="mr-2" />
-                                                    <span className="text-sm">{facility.building?.name || 'N/A'}</span>
-                                                </div>
-                                            </td>
-                                            <td className="p-4">
-                                                <div className="flex items-center text-slate-500 text-xs">
-                                                    <MapPin size={14} className="mr-1" />
-                                                    {facility.coordinate.lat.toFixed(4)}, {facility.coordinate.lng.toFixed(4)}
-                                                </div>
-                                            </td>
-                                            <td className="p-4 text-right space-x-2">
-                                                <Button 
-                                                    variant="ghost" 
-                                                    size="sm"
-                                                    onClick={() => handleEditClick(facility)}
-                                                >
-                                                    <Edit size={14} />
-                                                </Button>
-                                                <Button 
-                                                    variant="ghost" 
-                                                    size="sm"
-                                                    onClick={() => handleDelete(facility.id)}
-                                                    disabled={isDeleting}
-                                                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                                                >
-                                                    <Trash2 size={14} />
-                                                </Button>
-                                            </td>
+                <QueryStateHandler
+                    isLoading={isLoading}
+                    isError={isError}
+                    error={error}
+                    data={facilitiesData?.data}
+                    emptyState={{
+                        icon: PackageOpen,
+                        title: 'No facilities found',
+                        description: 'Try adjusting your filters or add a new facility.',
+                        action: (
+                            <Button variant="outline" size="sm" onClick={handleAddClick}>
+                                <Plus className="mr-2 h-4 w-4" />
+                                Add Facility
+                            </Button>
+                        )
+                    }}
+                >
+                    {(facilities) => (
+                        <>
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr className="border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
+                                            <th className="p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('facilities.facility')}</th>
+                                            <th className="p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('facilities.category')}</th>
+                                            <th className="p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('facilities.building')}</th>
+                                            <th className="p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('facilities.location')}</th>
+                                            <th className="p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">{t('common.actions')}</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-
-                        {/* Pagination */}
-                        {facilitiesData && facilitiesData.meta.last_page > 1 && (
-                            <div className="p-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
-                                <span className="text-sm text-slate-500">
-                                    Showing {(facilitiesData.meta.current_page - 1) * facilitiesData.meta.per_page + 1} to {Math.min(facilitiesData.meta.current_page * facilitiesData.meta.per_page, facilitiesData.meta.total)} of {facilitiesData.meta.total} facilities
-                                </span>
-                                <div className="flex space-x-2">
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => setFilters(prev => ({ ...prev, page: Math.max(1, prev.page! - 1) }))}
-                                        disabled={filters.page === 1}
-                                    >
-                                        <ChevronLeft size={16} />
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => setFilters(prev => ({ ...prev, page: Math.min(facilitiesData.meta.last_page, prev.page! + 1) }))}
-                                        disabled={filters.page === facilitiesData.meta.last_page}
-                                    >
-                                        <ChevronRight size={16} />
-                                    </Button>
-                                </div>
+                                    </thead>
+                                    <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
+                                        {facilities.map((facility) => (
+                                            <tr key={facility.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-700/20 transition-colors">
+                                                <td className="p-4">
+                                                    <div className="flex flex-col">
+                                                        <span className="font-medium text-slate-900 dark:text-white">{facility.name}</span>
+                                                        <span className="text-xs text-slate-500 truncate max-w-xs">{facility.description}</span>
+                                                    </div>
+                                                </td>
+                                                <td className="p-4">
+                                                    {facility.category && (
+                                                        <div className="flex items-center space-x-2">
+                                                            <div 
+                                                                className="h-3 w-3 rounded-full"
+                                                                style={{ backgroundColor: facility.category.color_code }}
+                                                            />
+                                                            <span className="text-sm text-slate-600 dark:text-slate-400">{facility.category.name}</span>
+                                                        </div>
+                                                    )}
+                                                </td>
+                                                <td className="p-4">
+                                                    <div className="flex items-center text-slate-600 dark:text-slate-400">
+                                                        <Building2 size={16} className="mr-2" />
+                                                        <span className="text-sm">{facility.building?.name || 'N/A'}</span>
+                                                    </div>
+                                                </td>
+                                                <td className="p-4">
+                                                    <div className="flex items-center text-slate-500 text-xs">
+                                                        <MapPin size={14} className="mr-1" />
+                                                        {facility.coordinate.lat.toFixed(4)}, {facility.coordinate.lng.toFixed(4)}
+                                                    </div>
+                                                </td>
+                                                <td className="p-4 text-right space-x-2">
+                                                    <Button 
+                                                        variant="ghost" 
+                                                        size="sm"
+                                                        onClick={() => handleEditClick(facility)}
+                                                    >
+                                                        <Edit size={14} />
+                                                    </Button>
+                                                    <Button 
+                                                        variant="ghost" 
+                                                        size="sm"
+                                                        onClick={() => handleDelete(facility.id)}
+                                                        disabled={isDeleting}
+                                                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                                    >
+                                                        <Trash2 size={14} />
+                                                    </Button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
                             </div>
-                        )}
-                    </>
-                )}
+
+                            {/* Pagination */}
+                            {facilitiesData && facilitiesData.meta.last_page > 1 && (
+                                <div className="p-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                                    <span className="text-sm text-slate-500">
+                                        Showing {(facilitiesData.meta.current_page - 1) * facilitiesData.meta.per_page + 1} to {Math.min(facilitiesData.meta.current_page * facilitiesData.meta.per_page, facilitiesData.meta.total)} of {facilitiesData.meta.total} facilities
+                                    </span>
+                                    <div className="flex space-x-2">
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={() => setFilters(prev => ({ ...prev, page: Math.max(1, prev.page! - 1) }))}
+                                            disabled={filters.page === 1}
+                                        >
+                                            <ChevronLeft size={16} />
+                                        </Button>
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={() => setFilters(prev => ({ ...prev, page: Math.min(facilitiesData.meta.last_page, prev.page! + 1) }))}
+                                            disabled={filters.page === facilitiesData.meta.last_page}
+                                        >
+                                            <ChevronRight size={16} />
+                                        </Button>
+                                    </div>
+                                </div>
+                            )}
+                        </>
+                    )}
+                </QueryStateHandler>
             </Card>
 
             <Modal

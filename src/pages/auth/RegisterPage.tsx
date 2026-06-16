@@ -5,6 +5,7 @@ import Button from '../../components/atoms/Button';
 import Input from '../../components/atoms/Input';
 import Card, { CardContent } from '../../components/atoms/Card';
 import { useTranslation } from 'react-i18next';
+import toast from 'react-hot-toast';
 import ThemeToggle from '../../components/molecules/ThemeToggle';
 
 const RegisterPage: React.FC = () => {
@@ -17,11 +18,15 @@ const RegisterPage: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        register({ 
+        toast.promise(register({ 
             name, 
             email, 
             password, 
             password_confirmation: passwordConfirmation 
+        }), {
+            loading: 'Creating account...',
+            success: 'Account created successfully!',
+            error: (err) => err?.response?.data?.message || 'Registration failed',
         });
     };
 
