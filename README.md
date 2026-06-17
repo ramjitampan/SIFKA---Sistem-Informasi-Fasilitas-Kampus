@@ -1,12 +1,3 @@
-## Documentation
-
-<a href="https://ramjitampan.github.io/SIFKA---Sistem-Informasi-Fasilitas-Kampus/">
-    <img
-      src="https://img.shields.io/badge/Docs-4051B5?style=for-the-badge&logo=MaterialForMkDocs&logoColor=white"
-      alt="Docs"
-    />
-</a>
-
 <div align="center">
 
 <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" width="90"/>

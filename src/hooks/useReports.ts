@@ -2,8 +2,6 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import api from '../lib/axios';
 import { Coordinate } from './useBuildings';
 import { Facility } from './useFacilities';
-import { useEffect } from 'react';
-import { echo } from '../lib/echo';
 
 export interface Report {
     id: number;
@@ -17,6 +15,7 @@ export interface Report {
         name: string;
     };
     facility?: Facility;
+    is_seen: boolean;
     created_at: string;
     updated_at: string;
 }
@@ -128,19 +127,4 @@ export const useDeleteReport = () => {
             queryClient.invalidateQueries({ queryKey: ['reports'] });
         },
     });
-};
-
-export const useReportUpdates = () => {
-    const queryClient = useQueryClient();
-
-    useEffect(() => {
-        const channel = echo.private('reports')
-            .listen('.ReportUpdated', (e: { report: Report }) => {
-                queryClient.invalidateQueries({ queryKey: ['reports'] });
-            });
-
-        return () => {
-            channel.stopListening('.ReportUpdated');
-        };
-    }, [queryClient]);
 };

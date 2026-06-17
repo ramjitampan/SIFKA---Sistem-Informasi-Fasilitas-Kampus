@@ -32,9 +32,15 @@ export const useAuth = () => {
 
     const logoutMutation = useMutation({
         mutationFn: async () => {
-            await api.post('/logout');
+            try {
+                await api.post('/logout');
+            } catch (error: any) {
+                if (error.response?.status !== 401) {
+                    throw error;
+                }
+            }
         },
-        onSuccess: () => {
+        onSettled: () => {
             clearAuth();
             navigate('/login');
         },

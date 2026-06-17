@@ -50,7 +50,9 @@
         "color": "Kode Warna",
         "facilities_count": "Fasilitas",
         "delete_confirm": "Apakah Anda yakin ingin menghapus kategori ini? Penghapusan akan gagal jika ada fasilitas yang terhubung.",
-        "deleted": "Kategori berhasil dihapus"
+        "deleted": "Kategori berhasil dihapus",
+        "delete_title": "Hapus Kategori",
+        "delete_desc": "Apakah Anda yakin ingin menghapus kategori ini? Aksi ini tidak dapat dibalikkan."
     },
     "facilities": {
         "title": "Manajemen Fasilitas",
@@ -63,7 +65,9 @@
         "building": "Gedung",
         "location": "Lokasi",
         "delete_confirm": "Apakah Anda yakin ingin menghapus fasilitas ini?",
-        "deleted": "Fasilitas berhasil dihapus"
+        "deleted": "Fasilitas berhasil dihapus",
+        "delete_title": "Hapus Fasilitas",
+        "delete_desc": "Apakah Anda yakin ingin menghapus fasilitas ini? Aksi ini tidak dapat dibalikkan."
     },
     "reports": {
         "title": "Laporan Fasilitas",
@@ -90,7 +94,9 @@
         "pin_location": "Tandai Lokasi di Peta",
         "submit_report": "Kirim Laporan",
         "submitting": "Mengirim...",
-        "accuracy_warning": "Pastikan laporan Anda akurat untuk membantu staf menyelesaikannya dengan cepat."
+        "accuracy_warning": "Pastikan laporan Anda akurat untuk membantu staf menyelesaikannya dengan cepat.",
+        "delete_title": "Hapus Laporan",
+        "delete_desc": "Apakah Anda yakin ingin menghapus laporan ini? Aksi ini tidak dapat dibalikkan."
     },
     "dashboard": {
         "welcome": "Selamat datang kembali, {{name}}",
@@ -117,7 +123,9 @@
         "name": "Nama Gedung",
         "description": "Deskripsi",
         "location": "Lokasi",
-        "delete_confirm": "Apakah Anda yakin ingin menghapus gedung ini?"
+        "delete_confirm": "Apakah Anda yakin ingin menghapus gedung ini?",
+        "delete_title": "Hapus Gedung",
+        "delete_desc": "Apakah Anda yakin ingin menghapus gedung ini? Aksi ini tidak dapat dibalikkan."
     },
     "users": {
         "title": "Manajemen Pengguna",
@@ -130,7 +138,18 @@
         "delete_user": "Hapus Pengguna",
         "delete_confirm": "Apakah Anda yakin ingin menghapus pengguna ini?",
         "role_updated": "Peran pengguna diperbarui menjadi {{role}}",
-        "user_deleted": "Pengguna berhasil dihapus"
+        "user_deleted": "Pengguna berhasil dihapus",
+        "delete_title": "Hapus Pengguna",
+        "delete_desc": "Apakah Anda yakin ingin menghapus pengguna ini? Aksi ini tidak dapat dibalikkan."
+    },
+    "pagination": {
+        "showing": "Menampilkan {{start}} sampai {{end}} dari {{total}} {{item_type}}",
+        "go_to": "Pergi ke",
+        "page": "Halaman"
+    },
+    "modal": {
+        "cancel": "Batal",
+        "delete": "Hapus"
     },
     "map": {
         "title": "Peta Interaktif",

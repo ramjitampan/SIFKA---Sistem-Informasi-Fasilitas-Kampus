@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { useReports, useReportUpdates, useDeleteReport } from '../../hooks/useReports';
+import { useRealTimeUpdates } from '../../hooks/useRealTimeUpdates';
+import { useReports, useDeleteReport } from '../../hooks/useReports';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../../store/useAuthStore';
 import { 
@@ -22,6 +23,7 @@ import Badge from '../../components/atoms/Badge';
 import Button from '../../components/atoms/Button';
 import Card, { CardHeader, CardContent } from '../../components/atoms/Card';
 import QueryStateHandler from '../../components/atoms/QueryStateHandler';
+import DeleteConfirmationModal from '../../components/atoms/DeleteConfirmationModal';
 
 const statusConfig = {
     pending: { label: 'Pending', icon: Clock, variant: 'warning' as const },
@@ -43,25 +45,38 @@ const ReportsPage: React.FC = () => {
     const { user } = useAuthStore();
     
     // Enable real-time updates
-    useReportUpdates();
+    useRealTimeUpdates('reports', '.ReportUpdated', ['reports']);
+
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [reportToDelete, setReportToDelete] = useState<number | null>(null);
 
     const handleStatusFilter = (status?: string) => {
         setStatusFilter(status);
         setPage(1);
     };
 
-    const handleDelete = (id: number) => {
-        if (window.confirm('Are you sure you want to delete this report?')) {
-            toast.promise(deleteReport(id), {
+    const confirmDelete = async () => {
+        if (reportToDelete) {
+            toast.promise(deleteReport(reportToDelete), {
                 loading: 'Deleting report...',
                 success: 'Report deleted successfully',
                 error: (err) => err?.response?.data?.message || 'Failed to delete report',
             });
+            setIsDeleteModalOpen(false);
+            setReportToDelete(null);
         }
     };
 
     return (
         <div className="space-y-6">
+            <DeleteConfirmationModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onConfirm={confirmDelete}
+                title={t('reports.delete_title')}
+                description={t('reports.delete_desc')}
+            />
+
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{t('reports.title')}</h1>
@@ -170,7 +185,11 @@ const ReportsPage: React.FC = () => {
                                                         <div className="flex items-center space-x-2">
                                                             {(user?.role === 'admin' || user?.id === report.user.id) && (
                                                                 <button 
-                                                                    onClick={(e) => { e.preventDefault(); handleDelete(report.id); }}
+                                                                    onClick={(e) => { 
+                                                                        e.preventDefault(); 
+                                                                        setReportToDelete(report.id);
+                                                                        setIsDeleteModalOpen(true);
+                                                                    }}
                                                                     className="p-2 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                                                                 >
                                                                     <Trash2 size={16} />

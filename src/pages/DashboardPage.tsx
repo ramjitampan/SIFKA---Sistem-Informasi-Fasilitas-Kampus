@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAuthStore } from '../store/useAuthStore';
-import { useReports, useMarkReportAsSeen } from '../hooks/useReports';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { 
     Clock, 
     CheckCircle2, 
@@ -11,11 +11,15 @@ import {
     MapPin,
     PackageOpen
 } from 'lucide-react';
+
 import Card, { CardContent, CardHeader } from '../components/atoms/Card';
 import Badge from '../components/atoms/Badge';
-import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import Button from '../components/atoms/Button';
 import QueryStateHandler from '../components/atoms/QueryStateHandler';
+
+import { useAuthStore } from '../store/useAuthStore';
+import { useReports, useMarkReportAsSeen } from '../hooks/useReports';
+import { useRealTimeUpdates } from '../hooks/useRealTimeUpdates';
 
 const statusConfig = {
     pending: { label: 'reports.status.pending', icon: Clock, variant: 'warning' as const },
@@ -27,9 +31,13 @@ const statusConfig = {
 const DashboardPage: React.FC = () => {
     const { user } = useAuthStore();
     const isStudent = user?.role === 'student';
-    const { data: reportsData, isLoading, isError, error } = useReports(1, undefined, !isStudent);
+    const [showUnseenOnly, setShowUnseenOnly] = React.useState(false);
+    const { data: reportsData, isLoading, isError, error } = useReports(1, undefined, showUnseenOnly);
     const { mutate: markAsSeen } = useMarkReportAsSeen();
     const { t } = useTranslation();
+
+    // Enable real-time updates
+    useRealTimeUpdates('reports', '.ReportUpdated', ['reports']);
 
     const handleReportClick = (id: number) => {
         if (!isStudent) {
@@ -65,7 +73,17 @@ const DashboardPage: React.FC = () => {
                             <TrendingUp className="mr-2 h-5 w-5 text-indigo-500" />
                             {isStudent ? 'My Reports' : t('dashboard.recent_reports')}
                         </h2>
-                        <Link to="/reports" className="text-sm text-indigo-600 hover:underline">{t('dashboard.view_all')}</Link>
+                        <div className="flex items-center space-x-4">
+                            {!isStudent && (
+                                <button 
+                                    onClick={() => setShowUnseenOnly(!showUnseenOnly)}
+                                    className={`text-sm px-3 py-1 rounded-full border transition ${showUnseenOnly ? 'bg-indigo-100 border-indigo-200 text-indigo-700' : 'bg-slate-100 border-slate-200 text-slate-600'}`}
+                                >
+                                    {showUnseenOnly ? 'Showing Unseen' : 'Show All'}
+                                </button>
+                            )}
+                            <Link to="/reports" className="text-sm text-indigo-600 hover:underline">{t('dashboard.view_all')}</Link>
+                        </div>
                     </CardHeader>
                     <CardContent className="p-0">
                         <QueryStateHandler
@@ -93,10 +111,13 @@ const DashboardPage: React.FC = () => {
                                                 key={report.id} 
                                                 to={`/reports/${report.id}`}
                                                 onClick={() => handleReportClick(report.id)}
-                                                className="block p-4 hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors"
+                                                className="block p-4 hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors relative"
                                             >
+                                                {!report.is_seen && (
+                                                    <span className="absolute top-4 left-2 w-2 h-2 bg-red-500 rounded-full" />
+                                                )}
                                                 <div className="flex items-center justify-between">
-                                                    <div className="flex items-center space-x-3">
+                                                    <div className="flex items-center space-x-3 ml-2">
                                                         <div className="h-10 w-10 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center flex-shrink-0">
                                                             <FileText className="h-5 w-5 text-slate-400" />
                                                         </div>

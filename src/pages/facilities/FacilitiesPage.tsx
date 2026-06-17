@@ -18,6 +18,8 @@ import Input from '../../components/atoms/Input';
 import Modal from '../../components/atoms/Modal';
 import FacilityForm from '../../components/molecules/FacilityForm';
 import QueryStateHandler from '../../components/atoms/QueryStateHandler';
+import Pagination from '../../components/atoms/Pagination';
+import DeleteConfirmationModal from '../../components/atoms/DeleteConfirmationModal';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
@@ -50,18 +52,23 @@ const FacilitiesPage: React.FC = () => {
         setIsModalOpen(true);
     };
 
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [facilityToDelete, setFacilityToDelete] = useState<number | null>(null);
+
     const handleEditClick = (facility: Facility) => {
         setEditingFacility(facility);
         setIsModalOpen(true);
     };
 
-    const handleDelete = (id: number) => {
-        if (window.confirm(t('facilities.delete_confirm'))) {
-            toast.promise(deleteFacility(id), {
+    const confirmDelete = async () => {
+        if (facilityToDelete) {
+            toast.promise(deleteFacility(facilityToDelete), {
                 loading: 'Deleting facility...',
                 success: 'Facility deleted successfully',
                 error: (err) => err?.response?.data?.message || 'Failed to delete facility',
             });
+            setIsDeleteModalOpen(false);
+            setFacilityToDelete(null);
         }
     };
 
@@ -86,6 +93,15 @@ const FacilitiesPage: React.FC = () => {
 
     return (
         <div className="space-y-6">
+            <DeleteConfirmationModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onConfirm={confirmDelete}
+                title={t('facilities.delete_title')}
+                description={t('facilities.delete_desc')}
+                isDeleting={isDeleting}
+            />
+
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{t('facilities.title')}</h1>
@@ -130,6 +146,7 @@ const FacilitiesPage: React.FC = () => {
                     {(facilities) => (
                         <>
                             <div className="overflow-x-auto">
+
                                 <table className="w-full text-left border-collapse">
                                     <thead>
                                         <tr className="border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
@@ -183,7 +200,10 @@ const FacilitiesPage: React.FC = () => {
                                                     <Button 
                                                         variant="ghost" 
                                                         size="sm"
-                                                        onClick={() => handleDelete(facility.id)}
+                                                        onClick={() => {
+                                                            setFacilityToDelete(facility.id);
+                                                            setIsDeleteModalOpen(true);
+                                                        }}
                                                         disabled={isDeleting}
                                                         className="text-red-600 hover:text-red-700 hover:bg-red-50"
                                                     >
@@ -198,29 +218,11 @@ const FacilitiesPage: React.FC = () => {
 
                             {/* Pagination */}
                             {facilitiesData && facilitiesData.meta.last_page > 1 && (
-                                <div className="p-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
-                                    <span className="text-sm text-slate-500">
-                                        Showing {(facilitiesData.meta.current_page - 1) * facilitiesData.meta.per_page + 1} to {Math.min(facilitiesData.meta.current_page * facilitiesData.meta.per_page, facilitiesData.meta.total)} of {facilitiesData.meta.total} facilities
-                                    </span>
-                                    <div className="flex space-x-2">
-                                        <Button
-                                            variant="outline"
-                                            size="sm"
-                                            onClick={() => setFilters(prev => ({ ...prev, page: Math.max(1, prev.page! - 1) }))}
-                                            disabled={filters.page === 1}
-                                        >
-                                            <ChevronLeft size={16} />
-                                        </Button>
-                                        <Button
-                                            variant="outline"
-                                            size="sm"
-                                            onClick={() => setFilters(prev => ({ ...prev, page: Math.min(facilitiesData.meta.last_page, prev.page! + 1) }))}
-                                            disabled={filters.page === facilitiesData.meta.last_page}
-                                        >
-                                            <ChevronRight size={16} />
-                                        </Button>
-                                    </div>
-                                </div>
+                                <Pagination
+                                    currentPage={facilitiesData.meta.current_page}
+                                    totalPages={facilitiesData.meta.last_page}
+                                    onPageChange={(page) => setFilters(prev => ({ ...prev, page }))}
+                                />
                             )}
                         </>
                     )}

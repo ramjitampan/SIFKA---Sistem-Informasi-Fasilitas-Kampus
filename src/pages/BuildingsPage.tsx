@@ -8,6 +8,8 @@ import Input from '../components/atoms/Input';
 import Modal from '../components/atoms/Modal';
 import BuildingForm from '../components/molecules/BuildingForm';
 import QueryStateHandler from '../components/atoms/QueryStateHandler';
+import Pagination from '../components/atoms/Pagination';
+import DeleteConfirmationModal from '../components/atoms/DeleteConfirmationModal';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
@@ -25,6 +27,8 @@ const BuildingsPage: React.FC = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingBuilding, setEditingBuilding] = useState<Building | null>(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [buildingToDelete, setBuildingToDelete] = useState<number | null>(null);
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -41,13 +45,15 @@ const BuildingsPage: React.FC = () => {
         setIsModalOpen(true);
     };
 
-    const handleDeleteClick = (id: number) => {
-        if (window.confirm(t('buildings.delete_confirm'))) {
-            toast.promise(deleteBuilding(id), {
+    const confirmDelete = async () => {
+        if (buildingToDelete) {
+            toast.promise(deleteBuilding(buildingToDelete), {
                 loading: 'Deleting building...',
                 success: 'Building deleted successfully',
                 error: (err) => err?.response?.data?.message || 'Failed to delete building',
             });
+            setIsDeleteModalOpen(false);
+            setBuildingToDelete(null);
         }
     };
 
@@ -72,6 +78,14 @@ const BuildingsPage: React.FC = () => {
 
     return (
         <div className="space-y-6">
+            <DeleteConfirmationModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onConfirm={confirmDelete}
+                title={t('buildings.delete_title')}
+                description={t('buildings.delete_desc')}
+                isDeleting={isDeleting}
+            />
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{t('buildings.title')}</h1>
@@ -145,7 +159,10 @@ const BuildingsPage: React.FC = () => {
                                                         variant="ghost" 
                                                         size="sm"
                                                         className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                                                        onClick={() => handleDeleteClick(building.id)}
+                                                        onClick={() => {
+                                                            setBuildingToDelete(building.id);
+                                                            setIsDeleteModalOpen(true);
+                                                        }}
                                                         disabled={isDeleting}
                                                     >
                                                         <Trash2 size={14} />
@@ -159,29 +176,12 @@ const BuildingsPage: React.FC = () => {
 
                             {/* Pagination */}
                             {buildingsData && buildingsData.meta.last_page > 1 && (
-                                <div className="p-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
-                                    <span className="text-sm text-slate-500">
-                                        Showing {(buildingsData.meta.current_page - 1) * 10 + 1} to {Math.min(buildingsData.meta.current_page * 10, buildingsData.meta.total)} of {buildingsData.meta.total} buildings
-                                    </span>
-                                    <div className="flex space-x-2">
-                                        <Button
-                                            variant="outline"
-                                            size="sm"
-                                            onClick={() => setFilters(prev => ({ ...prev, page: Math.max(1, (prev.page || 1) - 1) }))}
-                                            disabled={(filters.page || 1) === 1}
-                                        >
-                                            <ChevronLeft size={16} />
-                                        </Button>
-                                        <Button
-                                            variant="outline"
-                                            size="sm"
-                                            onClick={() => setFilters(prev => ({ ...prev, page: Math.min(buildingsData.meta.last_page, (prev.page || 1) + 1) }))}
-                                            disabled={(filters.page || 1) === buildingsData.meta.last_page}
-                                        >
-                                            <ChevronRight size={16} />
-                                        </Button>
-                                    </div>
-                                </div>
+                                <Pagination
+                                    currentPage={buildingsData.meta.current_page}
+                                    totalPages={buildingsData.meta.last_page}
+                                    onPageChange={(page) => setFilters(prev => ({ ...prev, page }))}
+
+                                />
                             )}
                         </>
                     )}

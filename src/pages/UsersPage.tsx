@@ -20,6 +20,8 @@ import Input from '../components/atoms/Input';
 import Modal from '../components/atoms/Modal';
 import UserForm from '../components/molecules/UserForm';
 import QueryStateHandler from '../components/atoms/QueryStateHandler';
+import Pagination from '../components/atoms/Pagination';
+import DeleteConfirmationModal from '../components/atoms/DeleteConfirmationModal';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
@@ -39,6 +41,9 @@ const UsersPage: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingUser, setEditingUser] = useState<User | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
+
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [userToDelete, setUserToDelete] = useState<number | null>(null);
 
     const handleSort = (field: 'name' | 'created_at' | 'role') => {
         setFilters(prev => ({
@@ -63,13 +68,15 @@ const UsersPage: React.FC = () => {
         setIsModalOpen(true);
     };
 
-    const handleDelete = (id: number) => {
-        if (window.confirm(t('users.delete_confirm'))) {
-            toast.promise(deleteUser(id), {
+    const confirmDelete = async () => {
+        if (userToDelete) {
+            toast.promise(deleteUser(userToDelete), {
                 loading: 'Deleting user...',
                 success: 'User deleted successfully',
                 error: (err) => err?.response?.data?.message || 'Failed to delete user',
             });
+            setIsDeleteModalOpen(false);
+            setUserToDelete(null);
         }
     };
 
@@ -102,6 +109,15 @@ const UsersPage: React.FC = () => {
 
     return (
         <div className="space-y-6">
+            <DeleteConfirmationModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onConfirm={confirmDelete}
+                title={t('users.delete_title')}
+                description={t('users.delete_desc')}
+                isDeleting={isDeleting}
+            />
+
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{t('users.title')}</h1>
@@ -231,7 +247,10 @@ const UsersPage: React.FC = () => {
                                                     <Button 
                                                         variant="ghost" 
                                                         size="sm"
-                                                        onClick={() => handleDelete(user.id)}
+                                                        onClick={() => {
+                                                            setUserToDelete(user.id);
+                                                            setIsDeleteModalOpen(true);
+                                                        }}
                                                         disabled={isDeleting}
                                                         className="text-red-600 hover:text-red-700 hover:bg-red-50"
                                                     >
@@ -246,29 +265,11 @@ const UsersPage: React.FC = () => {
 
                             {/* Pagination */}
                             {usersData && usersData.meta.last_page > 1 && (
-                                <div className="p-4 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
-                                    <span className="text-sm text-slate-500">
-                                        Showing {(usersData.meta.current_page - 1) * 10 + 1} to {Math.min(usersData.meta.current_page * 10, usersData.meta.total)} of {usersData.meta.total} users
-                                    </span>
-                                    <div className="flex space-x-2">
-                                        <Button
-                                            variant="outline"
-                                            size="sm"
-                                            onClick={() => setFilters(prev => ({ ...prev, page: Math.max(1, prev.page! - 1) }))}
-                                            disabled={filters.page === 1}
-                                        >
-                                            <ChevronLeft size={16} />
-                                        </Button>
-                                        <Button
-                                            variant="outline"
-                                            size="sm"
-                                            onClick={() => setFilters(prev => ({ ...prev, page: Math.min(usersData.meta.last_page, prev.page! + 1) }))}
-                                            disabled={filters.page === usersData.meta.last_page}
-                                        >
-                                            <ChevronRight size={16} />
-                                        </Button>
-                                    </div>
-                                </div>
+                                <Pagination
+                                    currentPage={usersData.meta.current_page}
+                                    totalPages={usersData.meta.last_page}
+                                    onPageChange={(page) => setFilters(prev => ({ ...prev, page }))}
+                                />
                             )}
                         </>
                     )}

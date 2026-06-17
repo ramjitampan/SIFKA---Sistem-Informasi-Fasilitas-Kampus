@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { useReport, useUpdateReportStatus, useReportUpdates } from '../../hooks/useReports';
+import { useReport, useUpdateReportStatus, useMarkReportAsSeen } from '../../hooks/useReports';
+import { useRealTimeUpdates } from '../../hooks/useRealTimeUpdates';
 import { 
     ArrowLeft, 
     Clock, 
@@ -48,9 +49,16 @@ const ReportShowPage: React.FC = () => {
     const { user: currentUser } = useAuthStore();
     const { data: report, isLoading, isError, error } = useReport(id);
     const { mutateAsync: updateStatus, isPending: isUpdating } = useUpdateReportStatus();
+    const { mutate: markAsSeen } = useMarkReportAsSeen();
     const { t } = useTranslation();
+
+    React.useEffect(() => {
+        if (id && currentUser?.role === 'student') {
+            markAsSeen(id);
+        }
+    }, [id, currentUser, markAsSeen]);
     
-    useReportUpdates();
+    useRealTimeUpdates('reports', '.ReportUpdated', ['reports']);
 
     const handleStatusUpdate = (newStatus: string) => {
         if (!report) return;

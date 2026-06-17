@@ -35,27 +35,27 @@ const AdvancedSearchPage: React.FC = () => {
                 <Card className="lg:col-span-1 h-fit">
                     <CardContent className="p-4 space-y-4">
                         <h3 className="font-semibold text-slate-900 dark:text-white flex items-center">
-                            <SlidersHorizontal className="h-4 w-4 mr-2" /> Filters
+                            <SlidersHorizontal className="h-4 w-4 mr-2" /> {t('advanced_search.filters')}
                         </h3>
                         <div>
-                            <label className="block text-sm text-slate-600 mb-1">Search Term</label>
+                            <label className="block text-sm text-slate-600 mb-1">{t('advanced_search.search_term')}</label>
                             <Input
                                 value={searchParams.get('q') || ''}
                                 onChange={(e) => updateFilter('q', e.target.value)}
-                                placeholder="Search everything..."
+                                placeholder={t('advanced_search.placeholder')}
                                 className="w-full"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm text-slate-600 mb-1">Status</label>
+                            <label className="block text-sm text-slate-600 mb-1">{t('advanced_search.status')}</label>
                             <select
                                 className="w-full border-slate-200 dark:border-slate-700 rounded-lg p-2 text-sm"
                                 value={searchParams.get('status') || ''}
                                 onChange={(e) => updateFilter('status', e.target.value)}
                             >
-                                <option value="">All Statuses</option>
-                                <option value="open">Open</option>
-                                <option value="resolved">Resolved</option>
+                                <option value="">{t('advanced_search.all_statuses')}</option>
+                                <option value="open">{t('advanced_search.open')}</option>
+                                <option value="resolved">{t('advanced_search.resolved')}</option>
                             </select>
                         </div>
                     </CardContent>
@@ -70,8 +70,8 @@ const AdvancedSearchPage: React.FC = () => {
                             data={data}
                             emptyState={{
                                 icon: PackageOpen,
-                                title: 'No results found',
-                                description: 'Try adjusting your filters or search term.'
+                                title: t('advanced_search.no_results'),
+                                description: t('advanced_search.empty_desc')
                             }}
                         >
                             {(results) => (

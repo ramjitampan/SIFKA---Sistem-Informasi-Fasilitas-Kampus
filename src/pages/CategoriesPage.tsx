@@ -17,6 +17,7 @@ import Input from '../components/atoms/Input';
 import Modal from '../components/atoms/Modal';
 import CategoryForm from '../components/molecules/CategoryForm';
 import QueryStateHandler from '../components/atoms/QueryStateHandler';
+import DeleteConfirmationModal from '../components/atoms/DeleteConfirmationModal';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
@@ -45,18 +46,23 @@ const CategoriesPage: React.FC = () => {
         setIsModalOpen(true);
     };
 
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [categoryToDelete, setCategoryToDelete] = useState<number | null>(null);
+
     const handleEditClick = (category: Category) => {
         setEditingCategory(category);
         setIsModalOpen(true);
     };
 
-    const handleDelete = (id: number) => {
-        if (window.confirm(t('categories.delete_confirm'))) {
-            toast.promise(deleteCategory(id), {
+    const confirmDelete = async () => {
+        if (categoryToDelete) {
+            toast.promise(deleteCategory(categoryToDelete), {
                 loading: 'Deleting category...',
                 success: 'Category deleted successfully',
                 error: (err) => err?.response?.data?.message || 'Failed to delete category',
             });
+            setIsDeleteModalOpen(false);
+            setCategoryToDelete(null);
         }
     };
 
@@ -88,6 +94,15 @@ const CategoriesPage: React.FC = () => {
 
     return (
         <div className="space-y-6">
+            <DeleteConfirmationModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onConfirm={confirmDelete}
+                title={t('categories.delete_title')}
+                description={t('categories.delete_desc')}
+                isDeleting={isDeleting}
+            />
+
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{t('categories.title')}</h1>
@@ -193,7 +208,10 @@ const CategoriesPage: React.FC = () => {
                                                     <Button 
                                                         variant="ghost" 
                                                         size="sm"
-                                                        onClick={() => handleDelete(category.id)}
+                                                        onClick={() => {
+                                                            setCategoryToDelete(category.id);
+                                                            setIsDeleteModalOpen(true);
+                                                        }}
                                                         disabled={isDeleting}
                                                         className="text-red-600 hover:text-red-700 hover:bg-red-50"
                                                     >
