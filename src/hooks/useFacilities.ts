@@ -14,6 +14,8 @@ export interface Facility {
     building?: {
         id: number;
         name: string;
+        description?: string;
+        coordinate?: Coordinate;
     };
 }
 

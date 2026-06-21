@@ -123,6 +123,7 @@
         "name": "Nama Gedung",
         "description": "Deskripsi",
         "location": "Lokasi",
+        "facilities_count": "Jumlah Fasilitas",
         "delete_confirm": "Apakah Anda yakin ingin menghapus gedung ini?",
         "delete_title": "Hapus Gedung",
         "delete_desc": "Apakah Anda yakin ingin menghapus gedung ini? Aksi ini tidak dapat dibalikkan."

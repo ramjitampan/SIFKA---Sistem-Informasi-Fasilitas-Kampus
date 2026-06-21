@@ -6,11 +6,26 @@ export interface Coordinate {
     lng: number;
 }
 
+export interface BuildingFacility {
+    id: number;
+    name: string;
+    description: string;
+    coordinate: Coordinate;
+    category?: {
+        id: number;
+        name: string;
+        color_code: string;
+        icon_marker: string;
+    };
+}
+
 export interface Building {
     id: number;
     name: string;
     description: string;
     coordinate: Coordinate;
+    facilities_count?: number;
+    amenities?: BuildingFacility[];
 }
 
 export interface BuildingsResponse {

@@ -1,11 +1,13 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Building2, PackageOpen } from 'lucide-react';
+import { ArrowLeft, Building2, PackageOpen, MapPin } from 'lucide-react';
 import { useBuilding } from '../../hooks/useBuildings';
-import Card from '../../components/atoms/Card';
+import Card, { CardContent } from '../../components/atoms/Card';
 import QueryStateHandler from '../../components/atoms/QueryStateHandler';
+import { useTranslation } from 'react-i18next';
 
 const BuildingShowPage: React.FC = () => {
+    const { t } = useTranslation();
     const { id } = useParams<{ id: string }>();
     const { data: building, isLoading, isError, error } = useBuilding(id);
     
@@ -27,12 +29,58 @@ const BuildingShowPage: React.FC = () => {
                 }}
             >
                 {(resolvedBuilding) => (
-                    <Card className="p-6">
-                        <h1 className="text-3xl font-bold text-slate-900 dark:text-white flex items-center mb-4">
-                            <Building2 className="mr-3 text-indigo-600" /> {resolvedBuilding.name}
-                        </h1>
-                        <p className="text-slate-600 dark:text-slate-400">{resolvedBuilding.description}</p>
-                    </Card>
+                    <div className="space-y-6">
+                        <Card className="p-6">
+                            <h1 className="text-3xl font-bold text-slate-900 dark:text-white flex items-center mb-4">
+                                <Building2 className="mr-3 text-indigo-600" /> {resolvedBuilding.name}
+                            </h1>
+                            <p className="text-slate-600 dark:text-slate-400 mb-4">{resolvedBuilding.description}</p>
+                            <div className="flex items-center text-slate-500 dark:text-slate-400 text-sm font-mono bg-slate-50 dark:bg-slate-800/50 p-2.5 rounded-lg w-fit">
+                                <MapPin size={16} className="mr-2 text-red-500" />
+                                {resolvedBuilding.coordinate.lat.toFixed(6)}, {resolvedBuilding.coordinate.lng.toFixed(6)}
+                            </div>
+                        </Card>
+
+                        <div className="space-y-4">
+                            <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center">
+                                {t('nav.facilities')}
+                            </h2>
+
+                            {!resolvedBuilding.amenities || resolvedBuilding.amenities.length === 0 ? (
+                                <Card className="p-8 text-center">
+                                    <PackageOpen className="mx-auto h-12 w-12 text-slate-400 mb-3" />
+                                    <p className="text-slate-500 dark:text-slate-400">No facilities registered in this building.</p>
+                                </Card>
+                            ) : (
+                                <div className="grid gap-4 md:grid-cols-2">
+                                    {resolvedBuilding.amenities.map((facility) => (
+                                        <Card key={facility.id} className="hover:shadow-md transition-shadow">
+                                            <CardContent className="p-4">
+                                                <div className="flex justify-between items-start mb-2">
+                                                    <h3 className="font-semibold text-slate-900 dark:text-white">{facility.name}</h3>
+                                                    {facility.category && (
+                                                        <span 
+                                                            className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium text-white"
+                                                            style={{ backgroundColor: facility.category.color_code }}
+                                                        >
+                                                            {facility.category.name}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <p className="text-sm text-slate-600 dark:text-slate-400 mb-3 line-clamp-2">
+                                                    {facility.description}
+                                                </p>
+                                                <div className="flex items-center text-slate-500 dark:text-slate-400 text-xs font-mono">
+                                                    <MapPin size={12} className="mr-1" />
+                                                    {facility.coordinate.lat.toFixed(4)}, {facility.coordinate.lng.toFixed(4)}
+                                                </div>
+                                            </CardContent>
+                                        </Card>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
                 )}
             </QueryStateHandler>
         </div>

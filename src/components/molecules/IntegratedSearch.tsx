@@ -27,10 +27,11 @@ const IntegratedSearch: React.FC<IntegratedSearchProps> = ({ onActiveChange }) =
         onActiveChange?.(isExpanded);
     }, [isExpanded, onActiveChange]);
 
-    const handleSelect = (href: string) => {
+    const handleSelect = (href: string, query?: string) => {
         setIsExpanded(false);
         setInputValue('');
-        navigate(href);
+        const url = query ? `${href}?q=${encodeURIComponent(query)}` : href;
+        navigate(url);
     };
 
     const hasResults = results && (results.buildings.length > 0 || results.facilities.length > 0 || results.reports.length > 0);
@@ -109,7 +110,7 @@ const IntegratedSearch: React.FC<IntegratedSearchProps> = ({ onActiveChange }) =
                                                 <div>
                                                     <h5 className="px-2 text-[10px] font-bold uppercase text-slate-400">{t('nav.reports')}</h5>
                                                     {results.reports.map(r => (
-                                                        <button key={r.id} onClick={() => handleSelect('/reports', r.title)} className="flex items-center w-full px-2 py-1.5 text-sm rounded hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300">
+                                                        <button key={r.id} onClick={() => handleSelect(`/reports/${r.id}`)} className="flex items-center w-full px-2 py-1.5 text-sm rounded hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300">
                                                             <FileText size={14} className="mr-2" /> {r.title}
                                                         </button>
                                                     ))}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import { useBuildings, useCreateBuilding, useUpdateBuilding, useDeleteBuilding, Building, BuildingFilters } from '../hooks/useBuildings';
 import { Building2, Plus, Edit, Trash2, ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import Button from '../components/atoms/Button';
@@ -136,6 +136,7 @@ const BuildingsPage: React.FC = () => {
                                         <tr className="border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
                                             <th className="p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('buildings.name')}</th>
                                             <th className="p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('buildings.description')}</th>
+                                            <th className="p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">{t('buildings.facilities_count')}</th>
                                             <th className="p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Coordinates</th>
                                             <th className="p-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">{t('common.actions')}</th>
                                         </tr>
@@ -143,11 +144,18 @@ const BuildingsPage: React.FC = () => {
                                     <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
                                         {buildings.map((building) => (
                                             <tr key={building.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-700/20 transition-colors">
-                                                <td className="p-4 font-medium text-slate-900 dark:text-white flex items-center">
-                                                    <Building2 className="mr-3 h-5 w-5 text-indigo-600" />
-                                                    {building.name}
+                                                <td className="p-4 font-medium text-slate-900 dark:text-white">
+                                                    <Link to={`/buildings/${building.id}`} className="flex items-center hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                                                        <Building2 className="mr-3 h-5 w-5 text-indigo-600" />
+                                                        {building.name}
+                                                    </Link>
                                                 </td>
                                                 <td className="p-4 text-sm text-slate-600 dark:text-slate-400 truncate max-w-xs">{building.description}</td>
+                                                <td className="p-4 text-sm text-slate-600 dark:text-slate-400">
+                                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300">
+                                                        {building.facilities_count ?? 0}
+                                                    </span>
+                                                </td>
                                                 <td className="p-4 text-sm text-slate-500 font-mono">
                                                     {building.coordinate.lat.toFixed(4)}, {building.coordinate.lng.toFixed(4)}
                                                 </td>
