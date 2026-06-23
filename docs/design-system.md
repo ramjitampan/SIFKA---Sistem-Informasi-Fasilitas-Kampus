@@ -6,6 +6,9 @@ Here is your fully updated, comprehensive Design System. I have merged your layo
 
 ## 1. Typography
 
+<details markdown="1">
+<summary>Click to see details</summary>
+
 * **Font Family:** Inter (Primary sans-serif)
 * **Scale:**
 * **Small:** `0.875rem` (14px) | Captions, metadata, helper text
@@ -17,7 +20,12 @@ Here is your fully updated, comprehensive Design System. I have merged your layo
 
 ---
 
+</details>
+
 ## 2. Colors (Theme-Aware)
+
+<details markdown="1">
+<summary>Click to see details</summary>
 
 ### Base Setup
 
@@ -44,7 +52,12 @@ Here is your fully updated, comprehensive Design System. I have merged your layo
 
 ---
 
+</details>
+
 ## 3. Spacing & Layout
+
+<details markdown="1">
+<summary>Click to see details</summary>
 
 Built on a standardized **4px grid** to ensure strict mathematical spacing across the interface.
 
@@ -60,7 +73,12 @@ Built on a standardized **4px grid** to ensure strict mathematical spacing acros
 
 ---
 
+</details>
+
 ## 4. Components & Elevation
+
+<details markdown="1">
+<summary>Click to see details</summary>
 
 ### Shape (Border Radius)
 
@@ -76,3 +94,6 @@ Built on a standardized **4px grid** to ensure strict mathematical spacing acros
 
 * **Dark Mode:**
 * *Avoid heavy black shadows.* Instead, rely on **color-based elevation** by placing your `Surface` color (`#1e293b`) directly on top of your `Background` canvas (`#0f172a`). If depth is still required, use a very faint light border or a subtle dark shadow opacity: `rgb(0 0 0 / 0.5)`.
+
+</details>
+

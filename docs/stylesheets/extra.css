@@ -1,20 +1,8 @@
-/* --- TEMA LIGHT (DEFAULT) --- */
+:root { --md-typeset-color: #7E56C2; }
 [data-md-color-scheme="default"] {
-    --md-primary-fg-color: #7E56C2;
-    --md-primary-fg-color--dark: #4D21CB;
-    --md-accent-fg-color: #4D21CB;
-
-    /* Warna link dan teks kode inline */
-    --md-typeset-a-color: #4D21CB;
+    --md-typeset-color: #7E56C2;
     --md-code-fg-color: #4D21CB;
+    --md-typeset-a-color: #4D21CB;
+    --md-default-fg-color--light: #4D21CB;
 }
-
-/* --- TEMA DARK (SLATE) --- */
-[data-md-color-scheme="slate"] {
-    /* Menggunakan warna dark khusus pilihan user */
-    --md-primary-fg-color: #e5e9f0;
-    --md-accent-fg-color: #e5e9f0;
-
-    /* Kembalikan warna teks utama agar tetap putih/abu terang (bukan ikut warna light) */
-    --md-typeset-color: rgba(255, 255, 255, 0.82);
-}
+[data-md-color-scheme="slate"] { --md-typeset-color: #e5e9f0; }

@@ -3,6 +3,9 @@
 <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" width="90"/>
 
 # ✨ SIFKA
+
+Documentation could be found here: [https://ramjitampan.github.io/SIFKA---Sistem-Informasi-Fasilitas-Kampus/](https://ramjitampan.github.io/SIFKA---Sistem-Informasi-Fasilitas-Kampus/)
+
 ## Sistem Informasi Fasilitas Kampus
 
 ### *Smart Campus Facility Management Platform*

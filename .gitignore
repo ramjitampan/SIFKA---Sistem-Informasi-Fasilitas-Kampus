@@ -8,3 +8,6 @@ site/
 *.pyc
 
 .env
+
+# Personal File
+docs/.backup
